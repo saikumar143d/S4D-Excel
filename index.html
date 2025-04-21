@@ -182,6 +182,20 @@
       border-radius: 0.375rem;
       overflow: hidden;
       box-shadow: 0 0 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      position: relative;
+    }
+    #headerIcon .mute-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: rgba(255,255,255,0.8);
+      border-radius: 9999px;
+      padding: 2px 4px;
+      font-size: 0.75rem;
+      color: #374151; /* gray-700 */
+      user-select: none;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -190,8 +204,8 @@
     <header class="bg-white shadow-sm">
       <div class="max-w-6xl mx-auto px-4 py-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <img id="headerIcon" src="https://i.giphy.com/4cJAkBS9KAOz2px44s.webp" alt="Animated gif icon showing a colorful swirling pattern with bright neon colors in motion" />
+          <div class="flex items-center gap-4 relative">
+            <img id="headerIcon" src="https://i.giphy.com/4cJAkBS9KAOz2px44s.webp" alt="Animated gif icon showing a colorful swirling pattern with bright neon colors in motion" tabindex="0" role="button" aria-pressed="true" aria-label="Toggle mute and unmute music playback" />
             <div>
               <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
                 Retail Management
@@ -322,6 +336,64 @@
       const nextExamDateSpan = nextExamDiv.querySelector("span.date");
       const nextExamTimeLeftSpan = nextExamDiv.querySelector("span.timeleft");
 
+      // Audio setup
+      const audio = new Audio("https://od.lk/s/NDJfNDc5NzIzNTJf/Har%20Ghar%20Me%20Ek%20Hi%20Naam%20Ringtone%20Download%20-%20MobCup.Com.Co.mp3");
+      audio.volume = 0.3;
+      audio.preload = "auto";
+      audio.loop = false;
+      let isMuted = false;
+
+      const headerIcon = document.getElementById("headerIcon");
+
+      // Create mute icon overlay
+      const muteIcon = document.createElement("span");
+      muteIcon.className = "mute-icon";
+      muteIcon.innerHTML = '<i class="fas fa-volume-up"></i>';
+      headerIcon.style.position = "relative";
+      headerIcon.appendChild(muteIcon);
+
+      function updateMuteIcon() {
+        if (audio.muted) {
+          muteIcon.innerHTML = '<i class="fas fa-volume-mute"></i>';
+          headerIcon.setAttribute("aria-pressed", "false");
+          headerIcon.setAttribute("aria-label", "Unmute music playback");
+        } else {
+          muteIcon.innerHTML = '<i class="fas fa-volume-up"></i>';
+          headerIcon.setAttribute("aria-pressed", "true");
+          headerIcon.setAttribute("aria-label", "Mute music playback");
+        }
+      }
+
+      headerIcon.addEventListener("click", () => {
+        if (audio.paused) {
+          audio.play().catch(() => {});
+        }
+        audio.muted = !audio.muted;
+        updateMuteIcon();
+      });
+
+      headerIcon.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          headerIcon.click();
+        }
+      });
+
+      audio.addEventListener("ended", () => {
+        // Do nothing special on end, only play once
+      });
+
+      // Play audio once on page load, respecting browser autoplay policies
+      window.addEventListener("load", () => {
+        // Try to play audio, if blocked, user can unmute by clicking icon
+        audio.play().catch(() => {
+          // Autoplay blocked, show muted icon
+          audio.muted = true;
+          updateMuteIcon();
+        });
+        updateMuteIcon();
+      });
+
       // Helper: parse exam end datetime (5pm on exam date)
       function getExamEndDateTime(exam) {
         const [dd, mm, yyyy] = exam.date.split("-");
@@ -365,7 +437,7 @@
             selectedDate === date
               ? "bg-blue-500 text-white"
               : "bg-white hover:bg-blue-50 text-gray-700"
-          }`;
+          } border`;
           btn.textContent = date;
           btn.setAttribute("aria-pressed", selectedDate === date);
           if (allPassed) {

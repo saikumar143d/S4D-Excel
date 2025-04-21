@@ -123,38 +123,55 @@
       color: #92400e; /* yellow-800 */
     }
     #nextExamNotification strong {
-      flex: 1 1 100%;
+      flex-shrink: 0;
       font-weight: 700;
       color: #78350f; /* yellow-900 */
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      max-width: 50vw;
     }
     #nextExamNotification span.date {
       flex: 1 1 auto;
       white-space: nowrap;
       color: #92400e; /* yellow-800 */
+      min-width: 5rem;
     }
     #nextExamNotification span.timeleft {
       flex: 1 1 auto;
       white-space: nowrap;
       color: #78350f; /* yellow-900 */
       font-weight: 600;
+      min-width: 7rem;
+      text-align: right;
     }
     @media (min-width: 640px) {
       #nextExamNotification > div {
         flex-wrap: nowrap;
       }
       #nextExamNotification strong {
-        flex: 0 0 auto;
-        margin-right: 0.5rem;
+        max-width: 20rem;
+        margin-left: 0.5rem;
       }
       #nextExamNotification span.date {
-        flex: 0 0 auto;
+        min-width: auto;
+        margin-left: auto;
         margin-right: 0.5rem;
+        text-align: right;
       }
       #nextExamNotification span.timeleft {
-        flex: 0 0 auto;
+        min-width: auto;
+        text-align: right;
+      }
+    }
+    @media (max-width: 639px) {
+      #nextExamNotification strong {
+        max-width: 60vw;
+      }
+      #nextExamNotification span.date,
+      #nextExamNotification span.timeleft {
+        min-width: auto;
+        text-align: left;
       }
     }
   </style>

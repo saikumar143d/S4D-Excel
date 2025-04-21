@@ -1,0 +1,407 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Retail Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    @keyframes slideIn {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    .exam-card {
+      animation: slideIn 0.3s ease-out forwards;
+      transition: all 0.3s ease;
+    }
+    .exam-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    .date-chip {
+      transition: all 0.2s ease;
+    }
+    .date-chip:hover {
+      animation: pulse 0.3s ease-in-out;
+    }
+    .loading-spinner {
+      border: 6px solid #e5e7eb;
+      border-top: 6px solid #3b82f6;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+  <div class="min-h-screen flex flex-col" id="app">
+    <header class="bg-white shadow-sm">
+      <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div>
+              <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
+                Retail Management
+              </h1>
+              <p class="text-sm text-gray-500">4th SEMESTER (2023 – 2025 AB)</p>
+            </div>
+          </div>
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
+            <div id="currentDate" class="inline-flex items-center rounded-full bg-green-100 text-green-700 px-3 py-1 font-semibold text-sm select-none whitespace-nowrap shadow-sm">
+              <i class="far fa-calendar-alt mr-2" aria-hidden="true"></i>
+              <span>Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="nextExamNotification" class="max-w-6xl mx-auto mt-3 px-4">
+      <div class="flex items-center gap-2 rounded-md bg-yellow-50 border border-yellow-300 px-4 py-2 text-yellow-800 text-sm font-semibold cursor-pointer select-none shadow-sm overflow-hidden truncate" role="link" tabindex="0" aria-live="polite" aria-label="Next exam notification">
+        <i class="fas fa-bell"></i>
+        <span class="truncate" id="nextExamText">Loading next exam...</span>
+      </div>
+    </section>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow">
+      <div id="dateFilters" class="flex flex-wrap gap-2 mb-6"></div>
+      <div id="examList" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+      <div id="noResults" class="hidden text-center py-12">
+        <div class="text-gray-400 text-6xl mb-4">
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </div>
+        <p class="text-gray-500 text-lg">No exams found matching your search.</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (() => {
+      const examSchedule = [
+        {
+          date: "22-04-2025",
+          day: "Tuesday",
+          time: "2pm to 5pm",
+          paper: "Supply Chain Management (SCM)",
+          code: "ARM-S-447-B",
+          path: "https://telegra.ph/androidneeds-03-02",
+          color: "bg-blue-100 border-blue-300",
+          icon: "truck",
+        },
+        {
+          date: "23-04-2025",
+          day: "Wednesday",
+          time: "2pm to 5pm",
+          paper: "Visual Merchandising (VM)",
+          code: "ARM-S-448-B",
+          path: "https://telegra.ph/How-to-Make-Your-Own-Hand-Sanitizer-04-25",
+          color: "bg-pink-100 border-pink-300",
+          icon: "paint-brush",
+        },
+        {
+          date: "24-04-2025",
+          day: "Thursday",
+          time: "2pm to 5pm",
+          paper: "E-Retailing (ER)",
+          code: "ARM-S-449-B",
+          path: "https://telegra.ph/Fraudsters-Try-To-Scam-PM-CARES-Donors-With-Fake-UPI-ID-03-31",
+          color: "bg-purple-100 border-purple-300",
+          icon: "shopping-cart",
+        },
+        {
+          date: "25-04-2025",
+          day: "Friday",
+          time: "2pm to 5pm",
+          paper: "Marketing Research (MR)",
+          code: "ARM-S-450-B",
+          path: "https://telegra.ph/Top-sites-for-career-04-11",
+          color: "bg-green-100 border-green-300",
+          icon: "chart-bar",
+        },
+        {
+          date: "28-04-2025",
+          day: "Monday",
+          time: "2pm to 5pm",
+          paper: "International Retailing and Bench Mark Retailers (IR & BR)",
+          code: "ARM-S-451-B",
+          path: "https://telegra.ph/The-Deverakonda-Foundation-04-26",
+          color: "bg-yellow-100 border-yellow-300",
+          icon: "globe",
+        },
+        {
+          date: "29-04-2025",
+          day: "Tuesday",
+          time: "2pm to 5pm",
+          paper: "Multi Brand Retailing (MBR)",
+          code: "ARM-S-452-B",
+          path: "https://telegra.ph/Projects-to-do-04-12",
+          color: "bg-indigo-100 border-indigo-300",
+          icon: "store",
+        },
+        {
+          date: "30-04-2025",
+          day: "Wednesday",
+          time: "2pm to 5pm",
+          paper: "Retail Communications (RC)",
+          code: "ARM-S-453-B",
+          path: "https://telegra.ph/Big-news-03-30",
+          color: "bg-red-100 border-red-300",
+          icon: "comments",
+        },
+      ];
+
+      let searchTerm = "";
+      let selectedDate = null;
+
+      const dateFilters = document.getElementById("dateFilters");
+      const examList = document.getElementById("examList");
+      const noResults = document.getElementById("noResults");
+      const currentDateEl = document.getElementById("currentDate").querySelector("span");
+      const nextExamNotification = document.getElementById("nextExamNotification");
+      const nextExamText = document.getElementById("nextExamText");
+
+      function filterExams() {
+        const term = searchTerm.toLowerCase();
+        return examSchedule.filter(
+          (exam) =>
+            (exam.paper.toLowerCase().includes(term) ||
+              exam.date.includes(term) ||
+              exam.day.toLowerCase().includes(term) ||
+              exam.code.toLowerCase().includes(term)) &&
+            (!selectedDate || exam.date === selectedDate)
+        );
+      }
+
+      function renderDateFilters() {
+        const uniqueDates = [...new Set(examSchedule
+          .map((exam) => exam.date))];
+
+        dateFilters.innerHTML = "";
+        uniqueDates.forEach((date) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = `date-chip px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+            selectedDate === date
+              ? "bg-blue-500 text-white"
+              : "bg-white hover:bg-blue-50 text-gray-700"
+          }`;
+          btn.textContent = date;
+          btn.setAttribute("aria-pressed", selectedDate === date);
+          btn.addEventListener("click", () => {
+            selectedDate = selectedDate === date ? null : date;
+            render();
+          });
+          dateFilters.appendChild(btn);
+        });
+      }
+
+      function renderExams() {
+        const filteredExams = filterExams();
+        examList.innerHTML = "";
+
+        if (filteredExams.length === 0) {
+          noResults.classList.remove("hidden");
+          return;
+        } else {
+          noResults.classList.add("hidden");
+        }
+
+        filteredExams.forEach((exam, index) => {
+          const card = document.createElement("div");
+          card.className = `exam-card ${exam.color} border rounded-lg overflow-hidden`;
+          card.style.animationDelay = `${index * 0.1}s`;
+
+          const link = document.createElement("a");
+          link.href = exam.path;
+          link.className = "block p-4 hover:bg-white/50 transition-colors";
+          link.setAttribute("tabindex", "0");
+          link.setAttribute("target", "_blank");
+          link.setAttribute("rel", "noopener noreferrer");
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            // Animate fade out then open link in new tab
+            document.getElementById("app").classList.add("opacity-0");
+            setTimeout(() => {
+              window.open(exam.path, "_blank", "noopener,noreferrer");
+              document.getElementById("app").classList.remove("opacity-0");
+            }, 100);
+          });
+
+          const flexDiv = document.createElement("div");
+          flexDiv.className = "flex items-center gap-4";
+
+          const iconDiv = document.createElement("div");
+          iconDiv.className =
+            "flex-shrink-0 w-10 h-10 rounded-full bg-white/80 flex items-center justify-center";
+          const icon = document.createElement("i");
+          icon.className = `fas fa-${exam.icon} text-gray-700`;
+          icon.setAttribute("aria-hidden", "true");
+          iconDiv.appendChild(icon);
+
+          const infoDiv = document.createElement("div");
+          infoDiv.className = "flex-1 min-w-0";
+
+          const titleRow = document.createElement("div");
+          titleRow.className = "flex items-baseline justify-between gap-2";
+
+          const title = document.createElement("h3");
+          title.className = "text-lg font-semibold text-gray-900 truncate";
+          title.textContent = exam.paper;
+
+          titleRow.appendChild(title);
+
+          const subRow = document.createElement("div");
+          subRow.className = "flex items-center gap-3 mt-1";
+
+          const daySpan = document.createElement("span");
+          daySpan.className = "text-sm text-gray-600";
+          daySpan.textContent = exam.day;
+
+          const codeSpan = document.createElement("span");
+          codeSpan.className = "text-sm text-gray-500";
+          codeSpan.textContent = exam.code;
+
+          subRow.appendChild(daySpan);
+          subRow.appendChild(codeSpan);
+
+          infoDiv.appendChild(titleRow);
+          infoDiv.appendChild(subRow);
+
+          const chevron = document.createElement("i");
+          chevron.className = "fas fa-chevron-right text-gray-400";
+          chevron.setAttribute("aria-hidden", "true");
+
+          flexDiv.appendChild(iconDiv);
+          flexDiv.appendChild(infoDiv);
+          flexDiv.appendChild(chevron);
+
+          link.appendChild(flexDiv);
+          card.appendChild(link);
+          examList.appendChild(card);
+        });
+      }
+
+      function updateCurrentDate() {
+        const now = new Date();
+        const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+        const formatted = now.toLocaleDateString(undefined, options);
+        currentDateEl.textContent = formatted;
+      }
+
+      function getNextExam() {
+        const now = new Date();
+        // Parse exam dates and find the next exam date >= today
+        const upcomingExams = examSchedule
+          .map(exam => {
+            // Parse date string "dd-mm-yyyy"
+            const [dd, mm, yyyy] = exam.date.split("-");
+            const examDate = new Date(`${yyyy}-${mm}-${dd}T00:00:00`);
+            return { ...exam, examDate };
+          })
+          .filter(exam => exam.examDate >= now)
+          .sort((a, b) => a.examDate - b.examDate);
+
+        return upcomingExams.length > 0 ? upcomingExams[0] : null;
+      }
+
+      function updateNextExamNotification() {
+        const nextExam = getNextExam();
+        if (!nextExam) {
+          nextExamText.textContent = "No upcoming exams";
+          nextExamNotification.classList.remove("cursor-pointer");
+          nextExamNotification.removeAttribute("role");
+          nextExamNotification.removeAttribute("tabindex");
+          nextExamNotification.onclick = null;
+          nextExamNotification.onkeypress = null;
+          return;
+        }
+        const options = { weekday: 'short', month: 'short', day: 'numeric' };
+        const examDateStr = nextExam.examDate.toLocaleDateString(undefined, options);
+        nextExamText.innerHTML = `<strong class="truncate">${nextExam.paper}</strong> on <span>${examDateStr}</span>`;
+        nextExamNotification.classList.add("cursor-pointer");
+        nextExamNotification.setAttribute("role", "link");
+        nextExamNotification.setAttribute("tabindex", "0");
+        nextExamNotification.setAttribute("aria-label", `Next exam is ${nextExam.paper} on ${examDateStr}, click to open details`);
+        nextExamNotification.onclick = () => {
+          window.open(nextExam.path, "_blank", "noopener,noreferrer");
+        };
+        nextExamNotification.onkeypress = (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            nextExamNotification.click();
+          }
+        };
+      }
+
+      function scheduleNextUpdate() {
+        const now = new Date();
+        const next5pm = new Date(now);
+        next5pm.setHours(17, 0, 0, 0);
+        if (now >= next5pm) {
+          // If current time is after 5pm, schedule for next day 5pm
+          next5pm.setDate(next5pm.getDate() + 1);
+        }
+        const msUntilNext5pm = next5pm - now;
+        setTimeout(() => {
+          updateNextExamNotification();
+          scheduleNextUpdate();
+        }, msUntilNext5pm);
+      }
+
+      function render() {
+        renderDateFilters();
+        renderExams();
+        updateNextExamNotification();
+      }
+
+      // Initial render
+      render();
+      updateCurrentDate();
+      setInterval(updateCurrentDate, 60000);
+      scheduleNextUpdate();
+    })();
+  </script>
+</body>
+</html>

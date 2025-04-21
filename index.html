@@ -371,12 +371,20 @@
       audio.volume = 0.4;
       audio.preload = "auto";
       audio.autoplay = true;
-      audio.loop = true;
+      audio.loop = false;
+      audio.muted = false;
 
-      // Play audio once on page load, handle autoplay restrictions
-      function tryPlayAudio() {
+      // Force play audio on user interaction fallback
+      function forcePlayAudio() {
         audio.play().catch(() => {
-          // Autoplay blocked, do nothing, user can unmute manually
+          // If autoplay blocked, try to play on first user interaction
+          const tryPlay = () => {
+            audio.play().catch(() => {});
+            window.removeEventListener('click', tryPlay);
+            window.removeEventListener('keydown', tryPlay);
+          };
+          window.addEventListener('click', tryPlay);
+          window.addEventListener('keydown', tryPlay);
         });
       }
 
@@ -434,9 +442,9 @@
       // Initialize audio button state
       updateAudioButton();
 
-      // Play audio once on page load
+      // Play audio once on page load, force play if blocked
       window.addEventListener("load", () => {
-        tryPlayAudio();
+        forcePlayAudio();
       });
 
       // Helper: parse exam end datetime (5pm on exam date)

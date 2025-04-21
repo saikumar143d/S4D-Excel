@@ -374,19 +374,23 @@
       audio.loop = false;
       audio.muted = false;
 
-      // Force play audio on user interaction fallback
-      function forcePlayAudio() {
+      // Play audio immediately on page load, ignoring autoplay restrictions
+      window.addEventListener("load", () => {
+        // Try to play audio immediately
         audio.play().catch(() => {
-          // If autoplay blocked, try to play on first user interaction
-          const tryPlay = () => {
+          // If autoplay blocked, unmute and play on first user interaction
+          function userInteract() {
+            audio.muted = false;
             audio.play().catch(() => {});
-            window.removeEventListener('click', tryPlay);
-            window.removeEventListener('keydown', tryPlay);
-          };
-          window.addEventListener('click', tryPlay);
-          window.addEventListener('keydown', tryPlay);
+            window.removeEventListener("click", userInteract);
+            window.removeEventListener("keydown", userInteract);
+            window.removeEventListener("touchstart", userInteract);
+          }
+          window.addEventListener("click", userInteract);
+          window.addEventListener("keydown", userInteract);
+          window.addEventListener("touchstart", userInteract);
         });
-      }
+      });
 
       // Mute/unmute button
       const audioControlBtn = document.getElementById("audioControlBtn");
@@ -441,11 +445,6 @@
 
       // Initialize audio button state
       updateAudioButton();
-
-      // Play audio once on page load, force play if blocked
-      window.addEventListener("load", () => {
-        forcePlayAudio();
-      });
 
       // Helper: parse exam end datetime (5pm on exam date)
       function getExamEndDateTime(exam) {

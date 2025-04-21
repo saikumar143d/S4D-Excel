@@ -58,8 +58,16 @@
     .date-chip {
       transition: all 0.2s ease;
     }
-    .date-chip:hover {
+    .date-chip:hover:not(:disabled) {
       animation: pulse 0.3s ease-in-out;
+      cursor: pointer;
+    }
+    .date-chip:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      background-color: #f3f4f6 !important; /* Tailwind gray-100 */
+      color: #9ca3af !important; /* Tailwind gray-400 */
+      border-color: #d1d5db !important; /* Tailwind gray-300 */
     }
     .loading-spinner {
       border: 6px solid #e5e7eb;
@@ -72,6 +80,81 @@
     @keyframes spin {
       to {
         transform: rotate(360deg);
+      }
+    }
+    /* Divider between date and time in currentDate */
+    #currentDate {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-variant-numeric: tabular-nums;
+    }
+    #currentDate .date-part,
+    #currentDate .time-part {
+      white-space: nowrap;
+    }
+    #currentDate .divider {
+      width: 1px;
+      height: 1.25rem;
+      background-color: #34d399; /* green-400 */
+      border-radius: 1px;
+      opacity: 0.7;
+    }
+    /* Next exam notification formatting */
+    #nextExamNotification > div {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-size: 0.875rem; /* text-sm */
+      color: #92400e; /* yellow-800 */
+      background-color: #fef3c7; /* yellow-50 */
+      border: 1px solid #fcd34d; /* yellow-300 */
+      border-radius: 0.375rem; /* rounded-md */
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      user-select: none;
+      overflow: hidden;
+    }
+    #nextExamNotification i {
+      flex-shrink: 0;
+      font-size: 1.125rem; /* text-lg */
+      color: #92400e; /* yellow-800 */
+    }
+    #nextExamNotification strong {
+      flex: 1 1 100%;
+      font-weight: 700;
+      color: #78350f; /* yellow-900 */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #nextExamNotification span.date {
+      flex: 1 1 auto;
+      white-space: nowrap;
+      color: #92400e; /* yellow-800 */
+    }
+    #nextExamNotification span.timeleft {
+      flex: 1 1 auto;
+      white-space: nowrap;
+      color: #78350f; /* yellow-900 */
+      font-weight: 600;
+    }
+    @media (min-width: 640px) {
+      #nextExamNotification > div {
+        flex-wrap: nowrap;
+      }
+      #nextExamNotification strong {
+        flex: 0 0 auto;
+        margin-right: 0.5rem;
+      }
+      #nextExamNotification span.date {
+        flex: 0 0 auto;
+        margin-right: 0.5rem;
+      }
+      #nextExamNotification span.timeleft {
+        flex: 0 0 auto;
       }
     }
   </style>
@@ -90,9 +173,11 @@
             </div>
           </div>
           <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
-            <div id="currentDate" class="inline-flex items-center rounded-full bg-green-100 text-green-700 px-3 py-1 font-semibold text-sm select-none whitespace-nowrap shadow-sm">
+            <div id="currentDate" class="inline-flex items-center rounded-full bg-green-100 text-green-700 px-3 py-1 font-semibold text-sm select-none whitespace-nowrap shadow-sm" aria-live="polite" aria-atomic="true">
               <i class="far fa-calendar-alt mr-2" aria-hidden="true"></i>
-              <span>Loading...</span>
+              <span class="date-part">Loading...</span>
+              <span class="divider" aria-hidden="true"></span>
+              <span class="time-part"></span>
             </div>
           </div>
         </div>
@@ -100,9 +185,11 @@
     </header>
 
     <section id="nextExamNotification" class="max-w-6xl mx-auto mt-3 px-4">
-      <div class="flex items-center gap-2 rounded-md bg-yellow-50 border border-yellow-300 px-4 py-2 text-yellow-800 text-sm font-semibold cursor-pointer select-none shadow-sm overflow-hidden truncate" role="link" tabindex="0" aria-live="polite" aria-label="Next exam notification">
-        <i class="fas fa-bell"></i>
-        <span class="truncate" id="nextExamText">Loading next exam...</span>
+      <div role="link" tabindex="0" aria-live="polite" aria-label="Next exam notification">
+        <i class="fas fa-bell" aria-hidden="true"></i>
+        <strong class="truncate">Loading next exam...</strong>
+        <span class="date"></span>
+        <span class="timeleft"></span>
       </div>
     </section>
 
@@ -199,9 +286,28 @@
       const dateFilters = document.getElementById("dateFilters");
       const examList = document.getElementById("examList");
       const noResults = document.getElementById("noResults");
-      const currentDateEl = document.getElementById("currentDate").querySelector("span");
+      const currentDateEl = document.getElementById("currentDate");
+      const currentDatePart = currentDateEl.querySelector(".date-part");
+      const currentTimePart = currentDateEl.querySelector(".time-part");
       const nextExamNotification = document.getElementById("nextExamNotification");
-      const nextExamText = document.getElementById("nextExamText");
+      const nextExamDiv = nextExamNotification.querySelector("div");
+      const nextExamStrong = nextExamDiv.querySelector("strong");
+      const nextExamDateSpan = nextExamDiv.querySelector("span.date");
+      const nextExamTimeLeftSpan = nextExamDiv.querySelector("span.timeleft");
+
+      // Helper: parse exam end datetime (5pm on exam date)
+      function getExamEndDateTime(exam) {
+        const [dd, mm, yyyy] = exam.date.split("-");
+        // 17:00:00 is 5pm
+        return new Date(`${yyyy}-${mm}-${dd}T17:00:00`);
+      }
+
+      // Helper: parse exam start datetime (2pm on exam date)
+      function getExamStartDateTime(exam) {
+        const [dd, mm, yyyy] = exam.date.split("-");
+        // 14:00:00 is 2pm
+        return new Date(`${yyyy}-${mm}-${dd}T14:00:00`);
+      }
 
       function filterExams() {
         const term = searchTerm.toLowerCase();
@@ -216,11 +322,16 @@
       }
 
       function renderDateFilters() {
-        const uniqueDates = [...new Set(examSchedule
-          .map((exam) => exam.date))];
+        const uniqueDates = [...new Set(examSchedule.map((exam) => exam.date))];
+        const now = new Date();
 
         dateFilters.innerHTML = "";
         uniqueDates.forEach((date) => {
+          // Find exam(s) on this date to check if all passed
+          const examsOnDate = examSchedule.filter(e => e.date === date);
+          // If all exams on this date have ended (past 5pm), disable button
+          const allPassed = examsOnDate.every(exam => getExamEndDateTime(exam) < now);
+
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = `date-chip px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
@@ -230,16 +341,22 @@
           }`;
           btn.textContent = date;
           btn.setAttribute("aria-pressed", selectedDate === date);
-          btn.addEventListener("click", () => {
-            selectedDate = selectedDate === date ? null : date;
-            render();
-          });
+          if (allPassed) {
+            btn.disabled = true;
+          } else {
+            btn.disabled = false;
+            btn.addEventListener("click", () => {
+              selectedDate = selectedDate === date ? null : date;
+              render();
+            });
+          }
           dateFilters.appendChild(btn);
         });
       }
 
       function renderExams() {
         const filteredExams = filterExams();
+        const now = new Date();
         examList.innerHTML = "";
 
         if (filteredExams.length === 0) {
@@ -250,9 +367,15 @@
         }
 
         filteredExams.forEach((exam, index) => {
+          const examEnd = getExamEndDateTime(exam);
+          const isPast = examEnd < now;
+
           const card = document.createElement("div");
           card.className = `exam-card ${exam.color} border rounded-lg overflow-hidden`;
           card.style.animationDelay = `${index * 0.1}s`;
+          if (isPast) {
+            card.classList.add("opacity-50");
+          }
 
           const link = document.createElement("a");
           link.href = exam.path;
@@ -260,15 +383,22 @@
           link.setAttribute("tabindex", "0");
           link.setAttribute("target", "_blank");
           link.setAttribute("rel", "noopener noreferrer");
-          link.addEventListener("click", (e) => {
-            e.preventDefault();
-            // Animate fade out then open link in new tab
-            document.getElementById("app").classList.add("opacity-0");
-            setTimeout(() => {
-              window.open(exam.path, "_blank", "noopener,noreferrer");
-              document.getElementById("app").classList.remove("opacity-0");
-            }, 100);
-          });
+          if (isPast) {
+            // Disable link if exam passed
+            link.classList.remove("hover:bg-white/50");
+            link.style.cursor = "not-allowed";
+            link.onclick = e => e.preventDefault();
+          } else {
+            link.addEventListener("click", (e) => {
+              e.preventDefault();
+              // Animate fade out then open link in new tab
+              document.getElementById("app").classList.add("opacity-0");
+              setTimeout(() => {
+                window.open(exam.path, "_blank", "noopener,noreferrer");
+                document.getElementById("app").classList.remove("opacity-0");
+              }, 100);
+            });
+          }
 
           const flexDiv = document.createElement("div");
           flexDiv.className = "flex items-center gap-4";
@@ -326,55 +456,110 @@
 
       function updateCurrentDate() {
         const now = new Date();
-        const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-        const dateStr = now.toLocaleDateString(undefined, options);
-        const timeStr = now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        currentDateEl.textContent = `${dateStr} ${timeStr}`;
+        const optionsDate = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+        const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const dateStr = now.toLocaleDateString(undefined, optionsDate);
+        const timeStr = now.toLocaleTimeString(undefined, optionsTime);
+        currentDatePart.textContent = dateStr;
+        currentTimePart.textContent = timeStr;
       }
 
       function getNextExam() {
         const now = new Date();
-        // Parse exam dates and find the next exam date >= today
+        // Parse exam dates and find the next exam date/time >= now (2pm to 5pm)
         const upcomingExams = examSchedule
           .map(exam => {
-            // Parse date string "dd-mm-yyyy"
             const [dd, mm, yyyy] = exam.date.split("-");
-            const examDate = new Date(`${yyyy}-${mm}-${dd}T00:00:00`);
-            return { ...exam, examDate };
+            // Exam start and end datetime
+            const examStart = new Date(`${yyyy}-${mm}-${dd}T14:00:00`);
+            const examEnd = new Date(`${yyyy}-${mm}-${dd}T17:00:00`);
+            return { ...exam, examStart, examEnd };
           })
-          .filter(exam => exam.examDate >= now)
-          .sort((a, b) => a.examDate - b.examDate);
+          .filter(exam => exam.examEnd >= now)
+          .sort((a, b) => a.examStart - b.examStart);
 
         return upcomingExams.length > 0 ? upcomingExams[0] : null;
       }
 
+      // Format time left as "X days HH:mm:ss"
+      function formatTimeLeft(ms) {
+        if (ms <= 0) return "0s";
+        const totalSeconds = Math.floor(ms / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        let result = "";
+        if (days > 0) result += days + (days === 1 ? " day " : " days ");
+        result +=
+          (hours < 10 ? "0" : "") + hours + ":" +
+          (minutes < 10 ? "0" : "") + minutes + ":" +
+          (seconds < 10 ? "0" : "") + seconds;
+        return result;
+      }
+
+      let nextExamInterval = null;
+
       function updateNextExamNotification() {
         const nextExam = getNextExam();
         if (!nextExam) {
-          nextExamText.textContent = "No upcoming exams";
-          nextExamNotification.classList.remove("cursor-pointer");
-          nextExamNotification.removeAttribute("role");
-          nextExamNotification.removeAttribute("tabindex");
-          nextExamNotification.onclick = null;
-          nextExamNotification.onkeypress = null;
+          nextExamStrong.textContent = "No upcoming exams";
+          nextExamDateSpan.textContent = "";
+          nextExamTimeLeftSpan.textContent = "";
+          nextExamDiv.classList.remove("cursor-pointer");
+          nextExamDiv.removeAttribute("role");
+          nextExamDiv.removeAttribute("tabindex");
+          nextExamDiv.onclick = null;
+          nextExamDiv.onkeypress = null;
+          if (nextExamInterval) {
+            clearInterval(nextExamInterval);
+            nextExamInterval = null;
+          }
           return;
         }
-        const options = { weekday: 'short', month: 'short', day: 'numeric' };
-        const examDateStr = nextExam.examDate.toLocaleDateString(undefined, options);
-        nextExamText.innerHTML = `<strong class="truncate">${nextExam.paper}</strong> on <span>${examDateStr}</span>`;
-        nextExamNotification.classList.add("cursor-pointer");
-        nextExamNotification.setAttribute("role", "link");
-        nextExamNotification.setAttribute("tabindex", "0");
-        nextExamNotification.setAttribute("aria-label", `Next exam is ${nextExam.paper} on ${examDateStr}, click to open details`);
-        nextExamNotification.onclick = () => {
+
+        function updateTimeLeft() {
+          const now = new Date();
+          let timeLeftMs;
+          let label;
+          if (now < nextExam.examStart) {
+            timeLeftMs = nextExam.examStart - now;
+            label = "Starts in";
+          } else if (now >= nextExam.examStart && now <= nextExam.examEnd) {
+            timeLeftMs = nextExam.examEnd - now;
+            label = "Ends in";
+          } else {
+            // Exam passed, clear interval and rerender
+            clearInterval(nextExamInterval);
+            nextExamInterval = null;
+            render();
+            return;
+          }
+          const timeLeftStr = formatTimeLeft(timeLeftMs);
+          const options = { weekday: 'short', month: 'short', day: 'numeric' };
+          const examDateStr = nextExam.examStart.toLocaleDateString(undefined, options);
+          nextExamStrong.textContent = nextExam.paper;
+          nextExamDateSpan.textContent = examDateStr;
+          nextExamTimeLeftSpan.textContent = `${label}: ${timeLeftStr}`;
+        }
+
+        nextExamDiv.classList.add("cursor-pointer");
+        nextExamDiv.setAttribute("role", "link");
+        nextExamDiv.setAttribute("tabindex", "0");
+        nextExamDiv.setAttribute("aria-label", `Next exam is ${nextExam.paper} on ${nextExam.examStart.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}, click to open details`);
+        nextExamDiv.onclick = () => {
           window.open(nextExam.path, "_blank", "noopener,noreferrer");
         };
-        nextExamNotification.onkeypress = (e) => {
+        nextExamDiv.onkeypress = (e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            nextExamNotification.click();
+            nextExamDiv.click();
           }
         };
+
+        updateTimeLeft();
+        if (nextExamInterval) clearInterval(nextExamInterval);
+        nextExamInterval = setInterval(updateTimeLeft, 1000);
       }
 
       function scheduleNextUpdate() {

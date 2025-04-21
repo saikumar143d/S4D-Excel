@@ -326,8 +326,9 @@
       function updateCurrentDate() {
         const now = new Date();
         const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-        const formatted = now.toLocaleDateString(undefined, options);
-        currentDateEl.textContent = formatted;
+        const dateStr = now.toLocaleDateString(undefined, options);
+        const timeStr = now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        currentDateEl.textContent = `${dateStr} ${timeStr}`;
       }
 
       function getNextExam() {
@@ -399,7 +400,7 @@
       // Initial render
       render();
       updateCurrentDate();
-      setInterval(updateCurrentDate, 60000);
+      setInterval(updateCurrentDate, 1000);
       scheduleNextUpdate();
     })();
   </script>

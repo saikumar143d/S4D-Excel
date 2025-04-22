@@ -46,14 +46,35 @@
         transform: scale(1);
       }
     }
+    @keyframes fallAndFade {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+        height: auto;
+        margin-bottom: 1rem;
+        padding: 0;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(50px);
+        height: 0;
+        margin-bottom: 0;
+        padding: 0;
+      }
+    }
     .exam-card {
       animation: slideIn 0.3s ease-out forwards;
       transition: all 0.3s ease;
+      overflow: hidden;
     }
     .exam-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    .exam-card.collapsing {
+      animation: fallAndFade 0.8s forwards;
+      pointer-events: none;
     }
     .date-chip {
       transition: all 0.2s ease;
@@ -68,6 +89,10 @@
       background-color: #f3f4f6 !important; /* Tailwind gray-100 */
       color: #9ca3af !important; /* Tailwind gray-400 */
       border-color: #d1d5db !important; /* Tailwind gray-300 */
+    }
+    /* Center and justify date chips */
+    #dateFilters {
+      justify-content: center;
     }
     .loading-spinner {
       border: 6px solid #e5e7eb;
@@ -100,7 +125,7 @@
       border-radius: 1px;
       opacity: 0.7;
     }
-    /* Next exam notification formatting */
+    /* Next exam notification base styling */
     #nextExamNotification > div {
       display: flex;
       flex-wrap: wrap;
@@ -108,24 +133,59 @@
       gap: 0.5rem;
       font-weight: 600;
       font-size: 0.875rem; /* text-sm */
-      color: #92400e; /* yellow-800 */
-      background-color: #fef3c7; /* yellow-50 */
-      border: 1px solid #fcd34d; /* yellow-300 */
       border-radius: 0.375rem; /* rounded-md */
       padding: 0.5rem 1rem;
       cursor: pointer;
       user-select: none;
       overflow: hidden;
+      transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+      border: 1px solid transparent;
+    }
+    #nextExamNotification > div.default {
+      color: #4b5563; /* gray-700 */
+      background-color: #f9fafb; /* gray-50 */
+      border-color: #d1d5db; /* gray-300 */
+      box-shadow: none;
+    }
+    #nextExamNotification > div.hour1 {
+      color: #374151; /* gray-800 */
+      background-color: #e0e7ff; /* indigo-100 */
+      border-color: #a5b4fc; /* indigo-300 */
+      box-shadow: 0 0 8px rgba(165, 180, 252, 0.6);
+    }
+    #nextExamNotification > div.hour2 {
+      color: #1e3a8a; /* indigo-900 */
+      background-color: #c7d2fe; /* indigo-200 */
+      border-color: #818cf8; /* indigo-400 */
+      box-shadow: 0 0 10px rgba(129, 140, 248, 0.7);
+    }
+    #nextExamNotification > div.hour3 {
+      color: #7c2d12; /* orange-900 */
+      background-color: #fed7aa; /* orange-200 */
+      border-color: #fb923c; /* orange-400 */
+      box-shadow: 0 0 12px rgba(251, 146, 60, 0.8);
+    }
+    #nextExamNotification > div.hour4plus {
+      color: #065f46; /* green-900 */
+      background-color: #bbf7d0; /* green-200 */
+      border-color: #34d399; /* green-400 */
+      box-shadow: 0 0 14px rgba(52, 211, 153, 0.9);
+    }
+    /* Alert style for last 30 minutes before exam start */
+    #nextExamNotification > div.alert {
+      color: #b45309; /* amber-700 */
+      background-color: #fef3c7; /* amber-100 */
+      border-color: #fbbf24; /* amber-400 */
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.9);
+      font-weight: 700;
+      animation: pulse 2s infinite ease-in-out;
     }
     #nextExamNotification i {
       flex-shrink: 0;
       font-size: 1.125rem; /* text-lg */
-      color: #92400e; /* yellow-800 */
     }
     #nextExamNotification strong {
       flex-shrink: 0;
-      font-weight: 700;
-      color: #78350f; /* yellow-900 */
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -134,13 +194,11 @@
     #nextExamNotification span.date {
       flex: 1 1 auto;
       white-space: nowrap;
-      color: #92400e; /* yellow-800 */
       min-width: 5rem;
     }
     #nextExamNotification span.timeleft {
       flex: 1 1 auto;
       white-space: nowrap;
-      color: #78350f; /* yellow-900 */
       font-weight: 600;
       min-width: 7rem;
       text-align: right;
@@ -174,45 +232,75 @@
         text-align: left;
       }
     }
-    /* Header icon styling */
-    #headerIcon {
+    /* Redesigned header icon wrapper with simple orange border, no animation */
+    #headerIconWrapper {
       width: 40px;
       height: 40px;
       flex-shrink: 0;
-      border-radius: 0.375rem;
+      border-radius: 0.5rem;
+      border: 2px solid #f97316; /* orange-500 */
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
-      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+      box-shadow: none;
+      cursor: default;
+      transition: none;
     }
-    /* Mute/unmute button styling */
+    #headerIconWrapper:hover {
+      box-shadow: none;
+      transform: none;
+    }
+    #headerIcon {
+      width: 36px;
+      height: 36px;
+      border-radius: 0.4rem;
+      object-fit: cover;
+      box-shadow: none;
+      background: transparent;
+      position: relative;
+      z-index: 1;
+    }
+    /* Mute/unmute button moved and redesigned */
     #audioControlBtn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       width: 22px;
       height: 22px;
-      margin-left: 0.5rem;
       cursor: pointer;
-      color: #3b82f6; /* blue-500 */
-      transition: color 0.2s ease;
-      user-select: none;
+      color: #f97316; /* orange-500 */
+      background-color: transparent;
+      border: none;
       border-radius: 4px;
-      background-color: rgba(59, 130, 246, 0.1);
-      box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);
+      box-shadow: none;
+      transition: color 0.3s ease, background-color 0.3s ease;
+      user-select: none;
+      padding: 0;
+      margin-left: 0.5rem;
       flex-shrink: 0;
     }
     #audioControlBtn:hover {
-      color: #2563eb; /* blue-700 */
-      background-color: rgba(37, 99, 235, 0.15);
-      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.5);
+      color: #c2410c; /* orange-700 */
+      background-color: rgba(249, 115, 22, 0.15);
     }
     #audioControlBtn svg {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       stroke: currentColor;
-      stroke-width: 1.5;
+      stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
       fill: none;
+      transition: stroke 0.3s ease;
+    }
+    /* Container for semester text and mute button inline */
+    #semesterContainer {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.125rem; /* small spacing */
     }
   </style>
 </head>
@@ -222,24 +310,24 @@
       <div class="max-w-6xl mx-auto px-4 py-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div class="flex items-center gap-4">
-            <img id="headerIcon" src="https://i.giphy.com/4cJAkBS9KAOz2px44s.webp" alt="Animated gif icon showing a colorful swirling pattern with bright neon colors in motion" />
-            <div class="flex items-center gap-2">
-              <div class="flex flex-col leading-tight">
-                <div class="flex items-center">
-                  <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text select-text">
-                    Retail Management
-                  </h1>
-                  <button id="audioControlBtn" aria-label="Mute audio" title="Mute audio" type="button" tabindex="0">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                      <path d="M5 9v6h4l5 5V4L9 9H5z" fill="currentColor" stroke="none"></path>
-                      <path d="M16.5 12a4.5 4.5 0 0 0-4.5-4.5" stroke="currentColor" fill="none"></path>
-                      <path d="M16.5 12a4.5 4.5 0 0 1-4.5 4.5" stroke="currentColor" fill="none"></path>
-                      <path d="M19 12a7 7 0 0 1-7 7" stroke="currentColor" fill="none"></path>
-                      <path d="M19 12a7 7 0 0 0-7-7" stroke="currentColor" fill="none"></path>
-                    </svg>
-                  </button>
-                </div>
-                <p class="text-sm text-gray-500 mt-0.5 select-text">4th SEMESTER (जय श्री राम)</p>
+            <div id="headerIconWrapper" aria-label="Retail Management logo with simple orange border" role="img">
+              <img id="headerIcon" src="https://i.giphy.com/4cJAkBS9KAOz2px44s.webp" alt="Animated gif icon showing a colorful swirling pattern with bright neon colors in motion" />
+            </div>
+            <div class="flex flex-col leading-tight">
+              <h1 class="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-400 text-transparent bg-clip-text select-text">
+                Retail Management
+              </h1>
+              <div id="semesterContainer">
+                <p class="text-sm text-gray-500 select-text m-0">4th SEMESTER (जय श्री राम)</p>
+                <button id="audioControlBtn" aria-label="Mute audio" title="Mute audio" type="button" tabindex="0">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 9v6h4l5 5V4L9 9H5z"></path>
+                    <path d="M16.5 12a4.5 4.5 0 0 0-4.5-4.5"></path>
+                    <path d="M16.5 12a4.5 4.5 0 0 1-4.5 4.5"></path>
+                    <path d="M19 12a7 7 0 0 1-7 7"></path>
+                    <path d="M19 12a7 7 0 0 0-7-7"></path>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
@@ -256,7 +344,7 @@
     </header>
 
     <section id="nextExamNotification" class="max-w-6xl mx-auto mt-3 px-4">
-      <div role="link" tabindex="0" aria-live="polite" aria-label="Next exam notification">
+      <div role="link" tabindex="0" aria-live="polite" aria-label="Next exam notification" class="default">
         <i class="fas fa-bell" aria-hidden="true"></i>
         <strong class="truncate">Loading next exam...</strong>
         <span class="date"></span>
@@ -367,8 +455,8 @@
       const nextExamTimeLeftSpan = nextExamDiv.querySelector("span.timeleft");
 
       // Audio setup
-      const audio = new Audio("https://od.lk/s/NDJfNDc5NzI0MjBf/Raghunandana%20%28From%20_HanuMan_%29%20%5BTelugu%5D%20-%20GowraHari.mp3");
-      audio.volume = 0.3;
+      const audio = new Audio("https://od.lk/s/NDJfNDc5NzQ4NTJf/Roa%20-%20Lights.mp3");
+      audio.volume = 0.5;
       audio.preload = "auto";
       audio.autoplay = true;
       audio.loop = false;
@@ -487,9 +575,9 @@
           btn.type = "button";
           btn.className = `date-chip px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
             selectedDate === date
-              ? "bg-blue-500 text-white"
-              : "bg-white hover:bg-blue-50 text-gray-700"
-          } border`;
+              ? "bg-orange-600 text-white"
+              : "bg-white hover:bg-orange-50 text-gray-700"
+          } border border-orange-300`;
           btn.textContent = date;
           btn.setAttribute("aria-pressed", selectedDate === date);
           if (allPassed) {
@@ -520,11 +608,26 @@
         filteredExams.forEach((exam, index) => {
           const examEnd = getExamEndDateTime(exam);
           const isPast = examEnd < now;
+          const twoHoursAfterEnd = new Date(examEnd.getTime() + 2 * 60 * 60 * 1000);
+          const shouldCollapse = now >= twoHoursAfterEnd;
 
           const card = document.createElement("div");
           card.className = `exam-card ${exam.color} border rounded-lg overflow-hidden`;
           card.style.animationDelay = `${index * 0.1}s`;
-          if (isPast) {
+
+          if (shouldCollapse) {
+            card.classList.add("collapsing");
+            // Remove from DOM after animation ends to avoid layout issues
+            card.addEventListener("animationend", () => {
+              if (card.parentNode) {
+                card.parentNode.removeChild(card);
+              }
+              // If no cards remain, show noResults
+              if (examList.children.length === 0) {
+                noResults.classList.remove("hidden");
+              }
+            });
+          } else if (isPast) {
             card.classList.add("opacity-50");
           }
 
@@ -534,12 +637,12 @@
           link.setAttribute("tabindex", "0");
           link.setAttribute("target", "_blank");
           link.setAttribute("rel", "noopener noreferrer");
-          if (isPast) {
-            // Disable link if exam passed
+          if (isPast && !shouldCollapse) {
+            // Disable link if exam passed but not collapsed yet
             link.classList.remove("hover:bg-white/50");
             link.style.cursor = "not-allowed";
             link.onclick = e => e.preventDefault();
-          } else {
+          } else if (!shouldCollapse) {
             link.addEventListener("click", (e) => {
               e.preventDefault();
               // Animate fade out then open link in new tab
@@ -657,6 +760,9 @@
           nextExamStrong.textContent = "No upcoming exams";
           nextExamDateSpan.textContent = "";
           nextExamTimeLeftSpan.textContent = "";
+          nextExamDiv.className = "default";
+          nextExamDiv.classList.remove("alert");
+          nextExamDiv.classList.remove("hour1", "hour2", "hour3", "hour4plus");
           nextExamDiv.classList.remove("cursor-pointer");
           nextExamDiv.removeAttribute("role");
           nextExamDiv.removeAttribute("tabindex");
@@ -692,6 +798,32 @@
           nextExamStrong.textContent = nextExam.paper;
           nextExamDateSpan.textContent = examDateStr;
           nextExamTimeLeftSpan.textContent = `${label}: ${timeLeftStr}`;
+
+          // Update color class based on hours passed since now to exam start
+          const msToStart = nextExam.examStart - now;
+          const hoursToStart = msToStart / (1000 * 60 * 60);
+
+          // Remove all color classes first
+          nextExamDiv.classList.remove("hour1", "hour2", "hour3", "hour4plus", "alert", "default");
+
+          if (label === "Starts in" && msToStart <= 30 * 60 * 1000 && msToStart > 0) {
+            // Alert style for last 30 minutes before exam start
+            nextExamDiv.classList.add("alert");
+          } else if (label === "Starts in" && msToStart > 0) {
+            // Change color every hour passed, counting down from exam start
+            if (hoursToStart <= 1) {
+              nextExamDiv.classList.add("hour1");
+            } else if (hoursToStart <= 2) {
+              nextExamDiv.classList.add("hour2");
+            } else if (hoursToStart <= 3) {
+              nextExamDiv.classList.add("hour3");
+            } else {
+              nextExamDiv.classList.add("hour4plus");
+            }
+          } else {
+            // During exam or after start, use default style
+            nextExamDiv.classList.add("default");
+          }
         }
 
         nextExamDiv.classList.add("cursor-pointer");
@@ -728,6 +860,34 @@
         }, msUntilNext5pm);
       }
 
+      // Periodically check for collapsing cards every minute
+      function startCollapseChecker() {
+        setInterval(() => {
+          const now = new Date();
+          const cards = Array.from(examList.children);
+          cards.forEach(card => {
+            if (card.classList.contains("collapsing")) return; // Already collapsing
+            const paper = card.querySelector("h3")?.textContent;
+            if (!paper) return;
+            const exam = examSchedule.find(e => e.paper === paper);
+            if (!exam) return;
+            const examEnd = getExamEndDateTime(exam);
+            const twoHoursAfterEnd = new Date(examEnd.getTime() + 2 * 60 * 60 * 1000);
+            if (now >= twoHoursAfterEnd) {
+              card.classList.add("collapsing");
+              card.addEventListener("animationend", () => {
+                if (card.parentNode) {
+                  card.parentNode.removeChild(card);
+                }
+                if (examList.children.length === 0) {
+                  noResults.classList.remove("hidden");
+                }
+              });
+            }
+          });
+        }, 60000); // every 60 seconds
+      }
+
       function render() {
         renderDateFilters();
         renderExams();
@@ -739,6 +899,7 @@
       updateCurrentDate();
       setInterval(updateCurrentDate, 1000);
       scheduleNextUpdate();
+      startCollapseChecker();
     })();
   </script>
 </body>

@@ -6,13 +6,10 @@
   <link rel="icon" type="image/gif" href="https://i.giphy.com/4cJAkBS9KAOz2px44s.webp" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-  />
-  <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
     rel="stylesheet"
   />
+  <script src="https://kit.fontawesome.com/46113fb541.js" crossorigin="anonymous"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -274,19 +271,11 @@
       flex-shrink: 0;
       position: relative;
       transition: color 0.3s ease;
+      font-size: 1.25rem;
+      line-height: 1;
     }
     #audioControlBtn:hover {
       color: #c2410c; /* orange-700 */
-    }
-    #audioControlBtn svg {
-      width: 22px;
-      height: 22px;
-      stroke: currentColor;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
-      transition: stroke 0.3s ease;
     }
     /* Container for semester text and mute button inline */
     #semesterContainer {
@@ -322,12 +311,7 @@
               <div id="semesterContainer">
                 <p class="text-sm text-gray-500 select-text m-0">4th SEMESTER (जय श्री राम)</p>
                 <button id="audioControlBtn" aria-label="Mute audio" title="Mute audio" type="button" tabindex="0" aria-pressed="false">
-                  <!-- Icon-based mute icon -->
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 9v6h4l5 5V4l-5 5H9z"></path>
-                    <line x1="16" y1="9" x2="22" y2="15"></line>
-                    <line x1="22" y1="9" x2="16" y2="15"></line>
-                  </svg>
+                  <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
@@ -457,10 +441,10 @@
 
       // Audio setup
       const audio = new Audio("https://od.lk/s/NDJfNDc5NzQ5MTNf/Shree_Ram_Dhun_~_Lofi_~_Peaceful_Ram_Bhajan_-_For_%20%28mp3cut.net%29.mp3");
-      audio.volume = 0.2;
+      audio.volume = 0.4;
       audio.preload = "auto";
       audio.autoplay = true;
-      audio.loop = true;
+      audio.loop = false;
       audio.muted = false;
 
       // Play audio immediately on page load, ignoring autoplay restrictions
@@ -483,27 +467,18 @@
 
       // Mute/unmute button
       const audioControlBtn = document.getElementById("audioControlBtn");
+
       function updateAudioButton() {
         if (audio.muted || audio.volume === 0) {
           audioControlBtn.setAttribute("aria-label", "Unmute audio");
           audioControlBtn.setAttribute("title", "Unmute audio");
-          audioControlBtn.innerHTML = `
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 9v6h4l5 5V4l-5 5H9z"></path>
-              <line x1="16" y1="9" x2="22" y2="15"></line>
-              <line x1="22" y1="9" x2="16" y2="15"></line>
-            </svg>
-          `;
+          audioControlBtn.setAttribute("aria-pressed", "true");
+          audioControlBtn.innerHTML = `<i class="fa-solid fa-volume-xmark" aria-hidden="true"></i>`;
         } else {
           audioControlBtn.setAttribute("aria-label", "Mute audio");
           audioControlBtn.setAttribute("title", "Mute audio");
-          audioControlBtn.innerHTML = `
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 9v6h4l5 5V4l-5 5H9z"></path>
-              <path d="M16 12a4 4 0 0 1-4 4"></path>
-              <path d="M16 12a4 4 0 0 0-4-4"></path>
-            </svg>
-          `;
+          audioControlBtn.setAttribute("aria-pressed", "false");
+          audioControlBtn.innerHTML = `<i class="fa-solid fa-volume-high" aria-hidden="true"></i>`;
         }
       }
 

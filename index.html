@@ -125,7 +125,7 @@
       border-radius: 1px;
       opacity: 0.7;
     }
-    /* Next exam notification base styling */
+    /* Next exam notification base styling without depth */
     #nextExamNotification > div {
       display: flex;
       flex-wrap: wrap;
@@ -138,47 +138,42 @@
       cursor: pointer;
       user-select: none;
       overflow: hidden;
-      transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+      transition: background-color 0.5s ease, color 0.5s ease;
       border: 1px solid transparent;
+      box-shadow: none !important;
     }
     #nextExamNotification > div.default {
       color: #4b5563; /* gray-700 */
       background-color: #f9fafb; /* gray-50 */
       border-color: #d1d5db; /* gray-300 */
-      box-shadow: none;
     }
     #nextExamNotification > div.hour1 {
       color: #374151; /* gray-800 */
       background-color: #e0e7ff; /* indigo-100 */
       border-color: #a5b4fc; /* indigo-300 */
-      box-shadow: 0 0 8px rgba(165, 180, 252, 0.6);
     }
     #nextExamNotification > div.hour2 {
       color: #1e3a8a; /* indigo-900 */
       background-color: #c7d2fe; /* indigo-200 */
       border-color: #818cf8; /* indigo-400 */
-      box-shadow: 0 0 10px rgba(129, 140, 248, 0.7);
     }
     #nextExamNotification > div.hour3 {
       color: #7c2d12; /* orange-900 */
       background-color: #fed7aa; /* orange-200 */
       border-color: #fb923c; /* orange-400 */
-      box-shadow: 0 0 12px rgba(251, 146, 60, 0.8);
     }
     #nextExamNotification > div.hour4plus {
       color: #065f46; /* green-900 */
       background-color: #bbf7d0; /* green-200 */
       border-color: #34d399; /* green-400 */
-      box-shadow: 0 0 14px rgba(52, 211, 153, 0.9);
     }
     /* Alert style for last 30 minutes before exam start */
     #nextExamNotification > div.alert {
       color: #b45309; /* amber-700 */
       background-color: #fef3c7; /* amber-100 */
       border-color: #fbbf24; /* amber-400 */
-      box-shadow: 0 0 20px rgba(251, 191, 36, 0.9);
-      font-weight: 700;
       animation: pulse 2s infinite ease-in-out;
+      font-weight: 700;
     }
     #nextExamNotification i {
       flex-shrink: 0;
@@ -232,7 +227,7 @@
         text-align: left;
       }
     }
-    /* Redesigned header icon wrapper with simple orange border, no animation */
+    /* Header icon wrapper with simple orange border */
     #headerIconWrapper {
       width: 40px;
       height: 40px;
@@ -262,34 +257,32 @@
       position: relative;
       z-index: 1;
     }
-    /* Mute/unmute button moved and redesigned */
+    /* Icon-based mute/unmute button for clean look and detailed presence */
     #audioControlBtn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 22px;
-      height: 22px;
+      width: 28px;
+      height: 28px;
       cursor: pointer;
       color: #f97316; /* orange-500 */
       background-color: transparent;
       border: none;
-      border-radius: 4px;
-      box-shadow: none;
-      transition: color 0.3s ease, background-color 0.3s ease;
-      user-select: none;
+      border-radius: 50%;
       padding: 0;
       margin-left: 0.5rem;
       flex-shrink: 0;
+      position: relative;
+      transition: color 0.3s ease;
     }
     #audioControlBtn:hover {
       color: #c2410c; /* orange-700 */
-      background-color: rgba(249, 115, 22, 0.15);
     }
     #audioControlBtn svg {
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
       stroke: currentColor;
-      stroke-width: 2;
+      stroke-width: 2.5;
       stroke-linecap: round;
       stroke-linejoin: round;
       fill: none;
@@ -301,6 +294,15 @@
       align-items: center;
       gap: 0.5rem;
       margin-top: 0.125rem; /* small spacing */
+    }
+    /* Retail Management text with new cool mixed gradient */
+    #retailTitle {
+      background: linear-gradient(90deg, #06b6d4, #3b82f6, #9333ea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      font-weight: 700;
     }
   </style>
 </head>
@@ -314,18 +316,17 @@
               <img id="headerIcon" src="https://i.giphy.com/4cJAkBS9KAOz2px44s.webp" alt="Animated gif icon showing a colorful swirling pattern with bright neon colors in motion" />
             </div>
             <div class="flex flex-col leading-tight">
-              <h1 class="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-400 text-transparent bg-clip-text select-text">
+              <h1 id="retailTitle" class="text-2xl select-text">
                 Retail Management
               </h1>
               <div id="semesterContainer">
                 <p class="text-sm text-gray-500 select-text m-0">4th SEMESTER (जय श्री राम)</p>
-                <button id="audioControlBtn" aria-label="Mute audio" title="Mute audio" type="button" tabindex="0">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 9v6h4l5 5V4L9 9H5z"></path>
-                    <path d="M16.5 12a4.5 4.5 0 0 0-4.5-4.5"></path>
-                    <path d="M16.5 12a4.5 4.5 0 0 1-4.5 4.5"></path>
-                    <path d="M19 12a7 7 0 0 1-7 7"></path>
-                    <path d="M19 12a7 7 0 0 0-7-7"></path>
+                <button id="audioControlBtn" aria-label="Mute audio" title="Mute audio" type="button" tabindex="0" aria-pressed="false">
+                  <!-- Icon-based mute icon -->
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 9v6h4l5 5V4l-5 5H9z"></path>
+                    <line x1="16" y1="9" x2="22" y2="15"></line>
+                    <line x1="22" y1="9" x2="16" y2="15"></line>
                   </svg>
                 </button>
               </div>
@@ -455,8 +456,8 @@
       const nextExamTimeLeftSpan = nextExamDiv.querySelector("span.timeleft");
 
       // Audio setup
-      const audio = new Audio("https://od.lk/s/NDJfNDc5NzQ4NTJf/Roa%20-%20Lights.mp3");
-      audio.volume = 0.3;
+      const audio = new Audio("https://od.lk/s/NDJfNDc5NzQ5MTNf/Shree_Ram_Dhun_~_Lofi_~_Peaceful_Ram_Bhajan_-_For_%20%28mp3cut.net%29.mp3");
+      audio.volume = 0.4;
       audio.preload = "auto";
       audio.autoplay = true;
       audio.loop = false;
@@ -487,25 +488,20 @@
           audioControlBtn.setAttribute("aria-label", "Unmute audio");
           audioControlBtn.setAttribute("title", "Unmute audio");
           audioControlBtn.innerHTML = `
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="1" y1="1" x2="23" y2="23"></line>
-              <path d="M5 9v6h4l5 5V4L9 9H5z"></path>
-              <path d="M16.5 12a4.5 4.5 0 0 0-4.5-4.5"></path>
-              <path d="M16.5 12a4.5 4.5 0 0 1-4.5 4.5"></path>
-              <path d="M19 12a7 7 0 0 1-7 7"></path>
-              <path d="M19 12a7 7 0 0 0-7-7"></path>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 9v6h4l5 5V4l-5 5H9z"></path>
+              <line x1="16" y1="9" x2="22" y2="15"></line>
+              <line x1="22" y1="9" x2="16" y2="15"></line>
             </svg>
           `;
         } else {
           audioControlBtn.setAttribute("aria-label", "Mute audio");
           audioControlBtn.setAttribute("title", "Mute audio");
           audioControlBtn.innerHTML = `
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 9v6h4l5 5V4L9 9H5z"></path>
-              <path d="M16.5 12a4.5 4.5 0 0 0-4.5-4.5"></path>
-              <path d="M16.5 12a4.5 4.5 0 0 1-4.5 4.5"></path>
-              <path d="M19 12a7 7 0 0 1-7 7"></path>
-              <path d="M19 12a7 7 0 0 0-7-7"></path>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 9v6h4l5 5V4l-5 5H9z"></path>
+              <path d="M16 12a4 4 0 0 1-4 4"></path>
+              <path d="M16 12a4 4 0 0 0-4-4"></path>
             </svg>
           `;
         }

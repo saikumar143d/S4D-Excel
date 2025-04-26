@@ -9,282 +9,66 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
     rel="stylesheet"
   />
-  <script src="https://kit.fontawesome.com/46113fb541.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f9fafb, #e0e7ff);
+      min-height: 100vh;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #374151;
+      font-size: 14px;
+      line-height: 1.4;
     }
-    @keyframes slideIn {
-      from {
-        transform: translateY(20px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.05);
-      }
-      100% {
-        transform: scale(1);
-      }
-    }
-    @keyframes fallAndFade {
-      0% {
-        opacity: 1;
-        transform: translateY(0);
-        height: auto;
-        margin-bottom: 1rem;
-        padding: 0;
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(50px);
-        height: 0;
-        margin-bottom: 0;
-        padding: 0;
-      }
-    }
-    .exam-card {
-      animation: slideIn 0.3s ease-out forwards;
-      transition: all 0.3s ease;
-      overflow: hidden;
-    }
-    .exam-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-        0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
-    .exam-card.collapsing {
-      animation: fallAndFade 0.8s forwards;
-      pointer-events: none;
-    }
-    .date-chip {
-      transition: all 0.2s ease;
-    }
-    .date-chip:hover:not(:disabled) {
-      animation: pulse 0.3s ease-in-out;
-      cursor: pointer;
-    }
-    .date-chip:disabled {
-      cursor: not-allowed;
-      opacity: 0.5;
-      background-color: #f3f4f6 !important; /* Tailwind gray-100 */
-      color: #9ca3af !important; /* Tailwind gray-400 */
-      border-color: #d1d5db !important; /* Tailwind gray-300 */
-    }
-    /* Center and justify date chips */
-    #dateFilters {
-      justify-content: center;
-    }
-    .loading-spinner {
-      border: 6px solid #e5e7eb;
-      border-top: 6px solid #3b82f6;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-    /* Divider between date and time in currentDate */
-    #currentDate {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-variant-numeric: tabular-nums;
-    }
-    #currentDate .date-part,
-    #currentDate .time-part {
-      white-space: nowrap;
-    }
-    #currentDate .divider {
-      width: 1px;
-      height: 1.25rem;
-      background-color: #34d399; /* green-400 */
-      border-radius: 1px;
-      opacity: 0.7;
-    }
-    /* Next exam notification base styling without depth */
-    #nextExamNotification > div {
+    #app {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1rem 1rem 2rem;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background: white;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.06);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      display: flex;
       align-items: center;
-      gap: 0.5rem;
-      font-weight: 600;
-      font-size: 0.875rem; /* text-sm */
-      border-radius: 0.375rem; /* rounded-md */
-      padding: 0.5rem 1rem;
-      cursor: pointer;
+      gap: 0.75rem;
       user-select: none;
-      overflow: hidden;
-      transition: background-color 0.5s ease, color 0.5s ease;
-      border: 1px solid transparent;
-      box-shadow: none !important;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 10;
     }
-    #nextExamNotification > div.default {
-      color: #4b5563; /* gray-700 */
-      background-color: #f9fafb; /* gray-50 */
-      border-color: #d1d5db; /* gray-300 */
-    }
-    #nextExamNotification > div.hour1 {
-      color: #374151; /* gray-800 */
-      background-color: #e0e7ff; /* indigo-100 */
-      border-color: #a5b4fc; /* indigo-300 */
-    }
-    #nextExamNotification > div.hour2 {
-      color: #1e3a8a; /* indigo-900 */
-      background-color: #c7d2fe; /* indigo-200 */
-      border-color: #818cf8; /* indigo-400 */
-    }
-    #nextExamNotification > div.hour3 {
-      color: #7c2d12; /* orange-900 */
-      background-color: #fed7aa; /* orange-200 */
-      border-color: #fb923c; /* orange-400 */
-    }
-    #nextExamNotification > div.hour4plus {
-      color: #065f46; /* green-900 */
-      background-color: #bbf7d0; /* green-200 */
-      border-color: #34d399; /* green-400 */
-    }
-    /* Alert style for last 30 minutes before exam start */
-    #nextExamNotification > div.alert {
-      color: #b45309; /* amber-700 */
-      background-color: #fef3c7; /* amber-100 */
-      border-color: #fbbf24; /* amber-400 */
-      animation: pulse 2s infinite ease-in-out;
-      font-weight: 700;
-    }
-    #nextExamNotification i {
-      flex-shrink: 0;
-      font-size: 1.125rem; /* text-lg */
-    }
-    #nextExamNotification strong {
-      flex-shrink: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 50vw;
-    }
-    #nextExamNotification span.date {
-      flex: 1 1 auto;
-      white-space: nowrap;
-      min-width: 5rem;
-    }
-    #nextExamNotification span.timeleft {
-      flex: 1 1 auto;
-      white-space: nowrap;
-      font-weight: 600;
-      min-width: 7rem;
-      text-align: right;
-    }
-    @media (min-width: 640px) {
-      #nextExamNotification > div {
-        flex-wrap: nowrap;
-      }
-      #nextExamNotification strong {
-        max-width: 20rem;
-        margin-left: 0.5rem;
-      }
-      #nextExamNotification span.date {
-        min-width: auto;
-        margin-left: auto;
-        margin-right: 0.5rem;
-        text-align: right;
-      }
-      #nextExamNotification span.timeleft {
-        min-width: auto;
-        text-align: right;
-      }
-    }
-    @media (max-width: 639px) {
-      #nextExamNotification strong {
-        max-width: 60vw;
-      }
-      #nextExamNotification span.date,
-      #nextExamNotification span.timeleft {
-        min-width: auto;
-        text-align: left;
-      }
-    }
-    /* Header icon wrapper with simple orange border */
     #headerIconWrapper {
       width: 40px;
       height: 40px;
-      flex-shrink: 0;
       border-radius: 0.5rem;
-      border: 2px solid #f97316; /* orange-500 */
+      border: 2.5px solid #f97316;
       background: white;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      box-shadow: none;
-      cursor: default;
-      transition: none;
+      box-shadow: 0 1px 5px rgb(249 115 22 / 0.3);
+      flex-shrink: 0;
+      transition: box-shadow 0.3s ease;
     }
     #headerIconWrapper:hover {
-      box-shadow: none;
-      transform: none;
+      box-shadow: 0 3px 10px rgb(249 115 22 / 0.6);
     }
     #headerIcon {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 0.4rem;
       object-fit: cover;
-      box-shadow: none;
       background: transparent;
       position: relative;
       z-index: 1;
     }
-    /* Icon-based mute/unmute button for clean look and detailed presence */
-    #audioControlBtn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      cursor: pointer;
-      color: #f97316; /* orange-500 */
-      background-color: transparent;
-      border: none;
-      border-radius: 50%;
-      padding: 0;
-      margin-left: 0.5rem;
-      flex-shrink: 0;
-      position: relative;
-      transition: color 0.3s ease;
-      font-size: 1.25rem;
-      line-height: 1;
-    }
-    #audioControlBtn:hover {
-      color: #c2410c; /* orange-700 */
-    }
-    /* Container for semester text and mute button inline */
-    #semesterContainer {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.125rem; /* small spacing */
-    }
-    /* Retail Management text with new cool mixed gradient */
     #retailTitle {
       background: linear-gradient(90deg, #06b6d4, #3b82f6, #9333ea);
       -webkit-background-clip: text;
@@ -292,44 +76,437 @@
       background-clip: text;
       text-fill-color: transparent;
       font-weight: 700;
+      font-size: 1.25rem;
+      line-height: 1.2;
+      user-select: text;
+      white-space: nowrap;
+      flex-grow: 1;
+      min-width: 0;
+    }
+    #semesterContainer {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-weight: 500;
+      color: #6b7280;
+      font-size: 0.8rem;
+      user-select: text;
+      white-space: nowrap;
+      margin-top: 0.1rem;
+    }
+    #audioControlBtn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      cursor: pointer;
+      color: #f97316;
+      background-color: transparent;
+      border: none;
+      border-radius: 50%;
+      padding: 0;
+      margin-left: 0.3rem;
+      flex-shrink: 0;
+      position: relative;
+      transition: color 0.3s ease;
+      font-size: 1rem;
+      line-height: 1;
+      box-shadow: 0 1px 5px rgb(249 115 22 / 0.3);
+      user-select: none;
+    }
+    #audioControlBtn:hover {
+      color: #c2410c;
+      box-shadow: 0 3px 10px rgb(194 65 12 / 0.6);
+    }
+    #currentDateContainer {
+      margin-top: 1rem;
+      background: #d1fae5;
+      color: #065f46;
+      padding: 0.4rem 0.9rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 6px rgb(5 95 70 / 0.15);
+      user-select: none;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      position: relative;
+      z-index: 5;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #currentDateContainer i {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    #currentDateContainer .divider {
+      width: 2px;
+      height: 1.3rem;
+      background-color: #10b981;
+      border-radius: 1px;
+      opacity: 0.8;
+    }
+    #nextExamNotification > div {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 1rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      user-select: none;
+      overflow: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.25s ease;
+      border: 1.5px solid transparent;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.05);
+      background-color: #f9fafb;
+      color: #374151;
+      max-width: 100%;
+      margin: 1.8rem auto 2rem auto;
+      flex-wrap: nowrap;
+    }
+    #nextExamNotification > div:hover {
+      box-shadow: 0 6px 20px rgb(0 0 0 / 0.12);
+      background-color: #e0e7ff;
+      color: #1e40af;
+      border-color: #6366f1;
+    }
+    #nextExamNotification > div.default {
+      background-color: #f9fafb;
+      color: #4b5563;
+      border-color: #d1d5db;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.05);
+      cursor: default;
+    }
+    #nextExamNotification > div.hour1 {
+      color: #1e3a8a;
+      background-color: #c7d2fe;
+      border-color: #818cf8;
+      box-shadow: 0 4px 14px rgb(129 140 248 / 0.4);
+    }
+    #nextExamNotification > div.hour2 {
+      color: #4338ca;
+      background-color: #a5b4fc;
+      border-color: #6366f1;
+      box-shadow: 0 4px 14px rgb(99 102 241 / 0.5);
+    }
+    #nextExamNotification > div.hour3 {
+      color: #7c2d12;
+      background-color: #fed7aa;
+      border-color: #fb923c;
+      box-shadow: 0 4px 14px rgb(251 146 60 / 0.5);
+    }
+    #nextExamNotification > div.hour4plus {
+      color: #065f46;
+      background-color: #bbf7d0;
+      border-color: #34d399;
+      box-shadow: 0 4px 14px rgb(52 211 153 / 0.5);
+    }
+    #nextExamNotification > div.alert {
+      color: #b45309;
+      background-color: #fef3c7;
+      border-color: #fbbf24;
+      animation: pulse 2s infinite ease-in-out;
+      font-weight: 800;
+      box-shadow: 0 0 12px 3px rgb(251 191 36 / 0.7);
+    }
+    #nextExamNotification i {
+      flex-shrink: 0;
+      font-size: 1.3rem;
+      min-width: 1.3rem;
+      text-align: center;
+      color: inherit;
+    }
+    #nextExamNotification strong {
+      flex-shrink: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 55vw;
+      font-size: 1.1rem;
+      line-height: 1.3;
+      color: inherit;
+    }
+    #nextExamNotification span.date {
+      flex-shrink: 0;
+      white-space: nowrap;
+      min-width: 6.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-align: right;
+      color: inherit;
+    }
+    #nextExamNotification span.timeleft {
+      flex-shrink: 0;
+      white-space: nowrap;
+      font-weight: 700;
+      min-width: 8.5rem;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: inherit;
+    }
+    @media (max-width: 720px) {
+      #nextExamNotification > div {
+        flex-wrap: wrap;
+        font-size: 0.95rem;
+        gap: 0.4rem;
+      }
+      #nextExamNotification strong {
+        max-width: 100%;
+        white-space: normal;
+      }
+      #nextExamNotification span.date,
+      #nextExamNotification span.timeleft {
+        min-width: auto;
+        text-align: left;
+        flex: 1 1 100%;
+      }
+    }
+    /* Date filters container */
+    #dateFilters {
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      display: flex;
+      width: 100%;
+    }
+    /* Date chips */
+    .date-chip {
+      padding: 0.35rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 2px solid #f97316;
+      background-color: white;
+      color: #f97316;
+      box-shadow: 0 2px 6px rgb(249 115 22 / 0.25);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      user-select: none;
+      min-width: 100px;
+      text-align: center;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+    .date-chip i {
+      font-size: 1rem;
+      color: #f97316;
+      flex-shrink: 0;
+    }
+    .date-chip:hover:not(:disabled) {
+      background-color: #f97316;
+      color: white;
+      box-shadow: 0 5px 16px rgb(249 115 22 / 0.6);
+      transform: scale(1.05);
+    }
+    .date-chip[aria-pressed="true"] {
+      background-color: #f97316;
+      color: white;
+      box-shadow: 0 5px 16px rgb(249 115 22 / 0.6);
+      cursor: default;
+      transform: scale(1.05);
+    }
+    .date-chip:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      background-color: #f3f4f6 !important;
+      color: #9ca3af !important;
+      border-color: #d1d5db !important;
+      box-shadow: none;
+      transform: none;
+    }
+    /* Exam cards grid */
+    #examList {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      width: 100%;
+    }
+    /* Exam card */
+    .exam-card {
+      background: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 5px 15px rgb(0 0 0 / 0.07);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: row;
+      border: 3px solid transparent;
+      animation: slideIn 0.35s ease forwards;
+      user-select: none;
+      min-height: 85px;
+      align-items: center;
+      padding: 0.7rem 1.25rem;
+      gap: 1rem;
+    }
+    .exam-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgb(0 0 0 / 0.15);
+      border-color: #f97316;
+    }
+    .exam-card.collapsing {
+      animation: fallAndFade 0.8s forwards;
+      pointer-events: none;
+    }
+    .exam-card.opacity-50 {
+      opacity: 0.5;
+      cursor: default;
+      pointer-events: none;
+      box-shadow: none;
+      border-color: #d1d5db;
+      transform: none !important;
+    }
+    .exam-card .icon-wrapper {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: white;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #374151;
+      font-size: 1.4rem;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+    .exam-card:hover .icon-wrapper {
+      color: #f97316;
+      box-shadow: 0 5px 18px rgb(249 115 22 / 0.5);
+    }
+    .exam-card .info {
+      flex-grow: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.15rem;
+      overflow: hidden;
+    }
+    .exam-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      user-select: text;
+    }
+    .exam-card .sub-info {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: #6b7280;
+      font-weight: 600;
+      user-select: none;
+      flex-wrap: wrap;
+    }
+    .exam-card .sub-info span {
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .exam-card .sub-info span i {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      flex-shrink: 0;
+    }
+    .exam-card .chevron {
+      flex-shrink: 0;
+      color: #9ca3af;
+      font-size: 1.2rem;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+    .exam-card:hover .chevron {
+      color: #f97316;
+    }
+    /* No results */
+    #noResults {
+      max-width: 600px;
+      margin: 3rem auto;
+      color: #9ca3af;
+      font-size: 1.1rem;
+      user-select: none;
+      text-align: center;
+    }
+    #noResults i {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      color: #d1d5db;
+    }
+    /* Animations */
+    @keyframes slideIn {
+      from {
+        transform: translateY(15px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    @keyframes fallAndFade {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+        height: auto;
+        margin-bottom: 1.25rem;
+        padding: 0;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(40px);
+        height: 0;
+        margin-bottom: 0;
+        padding: 0;
+      }
     }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-  <div class="min-h-screen flex flex-col" id="app">
-    <header class="bg-white shadow-sm">
-      <div class="max-w-6xl mx-auto px-4 py-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <div id="headerIconWrapper" aria-label="Retail Management logo with simple orange border" role="img">
-              <img id="headerIcon" src="https://i.giphy.com/4cJAkBS9KAOz2px44s.webp" alt="Animated gif icon showing a colorful swirling pattern with bright neon colors in motion" />
-            </div>
-            <div class="flex flex-col leading-tight">
-              <h1 id="retailTitle" class="text-2xl select-text">
-                Retail Management
-              </h1>
-              <div id="semesterContainer">
-                <p class="text-sm text-gray-500 select-text m-0">4th SEMESTER (जय श्री राम)</p>
-                <button id="audioControlBtn" aria-label="Mute audio" title="Mute audio" type="button" tabindex="0" aria-pressed="false">
-                  <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
-            <div id="currentDate" class="inline-flex items-center rounded-full bg-green-100 text-green-700 px-3 py-1 font-semibold text-sm select-none whitespace-nowrap shadow-sm" aria-live="polite" aria-atomic="true">
-              <i class="far fa-calendar-alt mr-2" aria-hidden="true"></i>
-              <span class="date-part">Loading...</span>
-              <span class="divider" aria-hidden="true"></span>
-              <span class="time-part"></span>
-            </div>
-          </div>
+<body>
+  <div id="app" role="main" aria-label="Retail Management Application">
+    <header>
+      <div id="headerIconWrapper" aria-label="Retail Management logo with simple orange border" role="img">
+        <img id="headerIcon" src="https://i.giphy.com/4cJAkBS9KAOz2px44s.webp" alt="Animated gif icon showing a colorful swirling pattern with bright neon colors in motion" />
+      </div>
+      <div style="flex-grow:1; min-width:0;">
+        <h1 id="retailTitle" class="select-text">Retail Management</h1>
+        <div id="semesterContainer">
+          <p class="m-0">4th SEMESTER (जय श्री राम)</p>
         </div>
       </div>
+      <button id="audioControlBtn" aria-label="Mute audio" title="Mute audio" type="button" tabindex="0" aria-pressed="false">
+        <i class="fas fa-volume-up" aria-hidden="true"></i>
+      </button>
     </header>
 
-    <section id="nextExamNotification" class="max-w-6xl mx-auto mt-3 px-4">
-      <div role="link" tabindex="0" aria-live="polite" aria-label="Next exam notification" class="default">
+    <div id="currentDateContainer" aria-live="polite" aria-atomic="true" title="Current date and time">
+      <i class="fas fa-calendar-day" aria-hidden="true"></i>
+      <span class="date-part">Loading...</span>
+      <span class="divider" aria-hidden="true"></span>
+      <span class="time-part"></span>
+    </div>
+
+    <section id="nextExamNotification" aria-live="polite" aria-atomic="true">
+      <div role="link" tabindex="0" aria-label="Next exam notification" class="default">
         <i class="fas fa-bell" aria-hidden="true"></i>
         <strong class="truncate">Loading next exam...</strong>
         <span class="date"></span>
@@ -337,14 +514,12 @@
       </div>
     </section>
 
-    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow">
-      <div id="dateFilters" class="flex flex-wrap gap-2 mb-6"></div>
-      <div id="examList" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
-      <div id="noResults" class="hidden text-center py-12">
-        <div class="text-gray-400 text-6xl mb-4">
-          <i class="fas fa-search" aria-hidden="true"></i>
-        </div>
-        <p class="text-gray-500 text-lg">No exams found matching your search.</p>
+    <main>
+      <div id="dateFilters" class="flex"></div>
+      <div id="examList" aria-live="polite" aria-atomic="true"></div>
+      <div id="noResults" class="hidden" role="alert" aria-live="assertive">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <p>No exams found matching your search.</p>
       </div>
     </main>
   </div>
@@ -355,27 +530,24 @@
         {
           date: "22-04-2025",
           day: "Tuesday",
-          time: "2pm to 5pm",
           paper: "Supply Chain Management (SCM)",
           code: "ARM-S-447-B",
           path: "https://telegra.ph/androidneeds-03-02",
           color: "bg-blue-100 border-blue-300",
-          icon: "truck",
+          icon: "truck-loading",
         },
         {
           date: "23-04-2025",
           day: "Wednesday",
-          time: "2pm to 5pm",
           paper: "Visual Merchandising (VM)",
           code: "ARM-S-448-B",
           path: "https://telegra.ph/How-to-Make-Your-Own-Hand-Sanitizer-04-25",
           color: "bg-pink-100 border-pink-300",
-          icon: "paint-brush",
+          icon: "palette",
         },
         {
           date: "24-04-2025",
           day: "Thursday",
-          time: "2pm to 5pm",
           paper: "E-Retailing (ER)",
           code: "ARM-S-449-B",
           path: "https://telegra.ph/Fraudsters-Try-To-Scam-PM-CARES-Donors-With-Fake-UPI-ID-03-31",
@@ -385,27 +557,24 @@
         {
           date: "25-04-2025",
           day: "Friday",
-          time: "2pm to 5pm",
           paper: "Marketing Research (MR)",
           code: "ARM-S-450-B",
           path: "https://telegra.ph/Top-sites-for-career-04-11",
           color: "bg-green-100 border-green-300",
-          icon: "chart-bar",
+          icon: "chart-line",
         },
         {
           date: "28-04-2025",
           day: "Monday",
-          time: "2pm to 5pm",
           paper: "International Retailing and Bench Mark Retailers (IR & BR)",
           code: "ARM-S-451-B",
           path: "https://telegra.ph/The-Deverakonda-Foundation-04-26",
           color: "bg-yellow-100 border-yellow-300",
-          icon: "globe",
+          icon: "globe-americas",
         },
         {
           date: "29-04-2025",
           day: "Tuesday",
-          time: "2pm to 5pm",
           paper: "Multi Brand Retailing (MBR)",
           code: "ARM-S-452-B",
           path: "https://telegra.ph/Projects-to-do-04-12",
@@ -415,7 +584,6 @@
         {
           date: "30-04-2025",
           day: "Wednesday",
-          time: "2pm to 5pm",
           paper: "Retail Communications (RC)",
           code: "ARM-S-453-B",
           path: "https://telegra.ph/Big-news-03-30",
@@ -424,15 +592,14 @@
         },
       ];
 
-      let searchTerm = "";
       let selectedDate = null;
 
       const dateFilters = document.getElementById("dateFilters");
       const examList = document.getElementById("examList");
       const noResults = document.getElementById("noResults");
-      const currentDateEl = document.getElementById("currentDate");
-      const currentDatePart = currentDateEl.querySelector(".date-part");
-      const currentTimePart = currentDateEl.querySelector(".time-part");
+      const currentDateContainer = document.getElementById("currentDateContainer");
+      const currentDatePart = currentDateContainer.querySelector(".date-part");
+      const currentTimePart = currentDateContainer.querySelector(".time-part");
       const nextExamNotification = document.getElementById("nextExamNotification");
       const nextExamDiv = nextExamNotification.querySelector("div");
       const nextExamStrong = nextExamDiv.querySelector("strong");
@@ -447,11 +614,8 @@
       audio.loop = true;
       audio.muted = false;
 
-      // Play audio immediately on page load, ignoring autoplay restrictions
       window.addEventListener("load", () => {
-        // Try to play audio immediately
         audio.play().catch(() => {
-          // If autoplay blocked, unmute and play on first user interaction
           function userInteract() {
             audio.muted = false;
             audio.play().catch(() => {});
@@ -465,7 +629,6 @@
         });
       });
 
-      // Mute/unmute button
       const audioControlBtn = document.getElementById("audioControlBtn");
 
       function updateAudioButton() {
@@ -473,12 +636,12 @@
           audioControlBtn.setAttribute("aria-label", "Unmute audio");
           audioControlBtn.setAttribute("title", "Unmute audio");
           audioControlBtn.setAttribute("aria-pressed", "true");
-          audioControlBtn.innerHTML = `<i class="fa-solid fa-volume-xmark" aria-hidden="true"></i>`;
+          audioControlBtn.innerHTML = `<i class="fas fa-volume-mute" aria-hidden="true"></i>`;
         } else {
           audioControlBtn.setAttribute("aria-label", "Mute audio");
           audioControlBtn.setAttribute("title", "Mute audio");
           audioControlBtn.setAttribute("aria-pressed", "false");
-          audioControlBtn.innerHTML = `<i class="fa-solid fa-volume-high" aria-hidden="true"></i>`;
+          audioControlBtn.innerHTML = `<i class="fas fa-volume-up" aria-hidden="true"></i>`;
         }
       }
 
@@ -494,7 +657,6 @@
         updateAudioButton();
       });
 
-      // Keyboard accessibility for button
       audioControlBtn.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
@@ -502,33 +664,20 @@
         }
       });
 
-      // Initialize audio button state
       updateAudioButton();
 
-      // Helper: parse exam end datetime (5pm on exam date)
       function getExamEndDateTime(exam) {
         const [dd, mm, yyyy] = exam.date.split("-");
-        // 17:00:00 is 5pm
         return new Date(`${yyyy}-${mm}-${dd}T17:00:00`);
       }
 
-      // Helper: parse exam start datetime (2pm on exam date)
-      function getExamStartDateTime(exam) {
-        const [dd, mm, yyyy] = exam.date.split("-");
-        // 14:00:00 is 2pm
-        return new Date(`${yyyy}-${mm}-${dd}T14:00:00`);
-      }
-
       function filterExams() {
-        const term = searchTerm.toLowerCase();
-        return examSchedule.filter(
-          (exam) =>
-            (exam.paper.toLowerCase().includes(term) ||
-              exam.date.includes(term) ||
-              exam.day.toLowerCase().includes(term) ||
-              exam.code.toLowerCase().includes(term)) &&
-            (!selectedDate || exam.date === selectedDate)
-        );
+        return examSchedule.filter(exam => {
+          if (selectedDate && exam.date !== selectedDate) return false;
+          const now = new Date();
+          const examEnd = getExamEndDateTime(exam);
+          return examEnd >= now;
+        });
       }
 
       function renderDateFilters() {
@@ -537,36 +686,27 @@
 
         dateFilters.innerHTML = "";
         uniqueDates.forEach((date) => {
-          // Find exam(s) on this date to check if all passed
           const examsOnDate = examSchedule.filter(e => e.date === date);
-          // If all exams on this date have ended (past 5pm), disable button
           const allPassed = examsOnDate.every(exam => getExamEndDateTime(exam) < now);
+
+          if (allPassed) return;
 
           const btn = document.createElement("button");
           btn.type = "button";
-          btn.className = `date-chip px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-            selectedDate === date
-              ? "bg-orange-600 text-white"
-              : "bg-white hover:bg-orange-50 text-gray-700"
-          } border border-orange-300`;
-          btn.textContent = date;
+          btn.className = "date-chip";
           btn.setAttribute("aria-pressed", selectedDate === date);
-          if (allPassed) {
-            btn.disabled = true;
-          } else {
-            btn.disabled = false;
-            btn.addEventListener("click", () => {
-              selectedDate = selectedDate === date ? null : date;
-              render();
-            });
-          }
+          btn.title = `Filter exams on ${date}`;
+          btn.innerHTML = `<i class="fas fa-calendar-alt" aria-hidden="true"></i>${date}`;
+          btn.addEventListener("click", () => {
+            selectedDate = selectedDate === date ? null : date;
+            render();
+          });
           dateFilters.appendChild(btn);
         });
       }
 
       function renderExams() {
         const filteredExams = filterExams();
-        const now = new Date();
         examList.innerHTML = "";
 
         if (filteredExams.length === 0) {
@@ -578,103 +718,64 @@
 
         filteredExams.forEach((exam, index) => {
           const examEnd = getExamEndDateTime(exam);
+          const now = new Date();
           const isPast = examEnd < now;
-          const twoHoursAfterEnd = new Date(examEnd.getTime() + 2 * 60 * 60 * 1000);
-          const shouldCollapse = now >= twoHoursAfterEnd;
 
-          const card = document.createElement("div");
-          card.className = `exam-card ${exam.color} border rounded-lg overflow-hidden`;
+          if (isPast) return;
+
+          const card = document.createElement("article");
+          card.className = `exam-card ${exam.color}`;
           card.style.animationDelay = `${index * 0.1}s`;
+          card.setAttribute("tabindex", "0");
+          card.setAttribute("role", "link");
+          card.setAttribute("aria-label", `Open details for exam ${exam.paper} on ${exam.date}`);
 
-          if (shouldCollapse) {
-            card.classList.add("collapsing");
-            // Remove from DOM after animation ends to avoid layout issues
-            card.addEventListener("animationend", () => {
-              if (card.parentNode) {
-                card.parentNode.removeChild(card);
-              }
-              // If no cards remain, show noResults
-              if (examList.children.length === 0) {
-                noResults.classList.remove("hidden");
-              }
-            });
-          } else if (isPast) {
-            card.classList.add("opacity-50");
-          }
-
-          const link = document.createElement("a");
-          link.href = exam.path;
-          link.className = "block p-4 hover:bg-white/50 transition-colors";
-          link.setAttribute("tabindex", "0");
-          link.setAttribute("target", "_blank");
-          link.setAttribute("rel", "noopener noreferrer");
-          if (isPast && !shouldCollapse) {
-            // Disable link if exam passed but not collapsed yet
-            link.classList.remove("hover:bg-white/50");
-            link.style.cursor = "not-allowed";
-            link.onclick = e => e.preventDefault();
-          } else if (!shouldCollapse) {
-            link.addEventListener("click", (e) => {
+          card.addEventListener("click", () => {
+            window.open(exam.path, "_blank", "noopener,noreferrer");
+          });
+          card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              // Animate fade out then open link in new tab
-              document.getElementById("app").classList.add("opacity-0");
-              setTimeout(() => {
-                window.open(exam.path, "_blank", "noopener,noreferrer");
-                document.getElementById("app").classList.remove("opacity-0");
-              }, 100);
-            });
-          }
-
-          const flexDiv = document.createElement("div");
-          flexDiv.className = "flex items-center gap-4";
+              card.click();
+            }
+          });
 
           const iconDiv = document.createElement("div");
-          iconDiv.className =
-            "flex-shrink-0 w-10 h-10 rounded-full bg-white/80 flex items-center justify-center";
+          iconDiv.className = "icon-wrapper";
           const icon = document.createElement("i");
-          icon.className = `fas fa-${exam.icon} text-gray-700`;
+          icon.className = `fas fa-${exam.icon}`;
           icon.setAttribute("aria-hidden", "true");
           iconDiv.appendChild(icon);
 
           const infoDiv = document.createElement("div");
-          infoDiv.className = "flex-1 min-w-0";
-
-          const titleRow = document.createElement("div");
-          titleRow.className = "flex items-baseline justify-between gap-2";
+          infoDiv.className = "info";
 
           const title = document.createElement("h3");
-          title.className = "text-lg font-semibold text-gray-900 truncate";
           title.textContent = exam.paper;
 
-          titleRow.appendChild(title);
-
-          const subRow = document.createElement("div");
-          subRow.className = "flex items-center gap-3 mt-1";
+          const subInfo = document.createElement("div");
+          subInfo.className = "sub-info";
 
           const daySpan = document.createElement("span");
-          daySpan.className = "text-sm text-gray-600";
-          daySpan.textContent = exam.day;
+          daySpan.innerHTML = `<i class="fas fa-calendar-day" aria-hidden="true"></i> ${exam.day}`;
 
           const codeSpan = document.createElement("span");
-          codeSpan.className = "text-sm text-gray-500";
-          codeSpan.textContent = exam.code;
+          codeSpan.innerHTML = `<i class="fas fa-barcode" aria-hidden="true"></i> ${exam.code}`;
 
-          subRow.appendChild(daySpan);
-          subRow.appendChild(codeSpan);
+          subInfo.appendChild(daySpan);
+          subInfo.appendChild(codeSpan);
 
-          infoDiv.appendChild(titleRow);
-          infoDiv.appendChild(subRow);
+          infoDiv.appendChild(title);
+          infoDiv.appendChild(subInfo);
 
           const chevron = document.createElement("i");
-          chevron.className = "fas fa-chevron-right text-gray-400";
+          chevron.className = "fas fa-chevron-right chevron";
           chevron.setAttribute("aria-hidden", "true");
 
-          flexDiv.appendChild(iconDiv);
-          flexDiv.appendChild(infoDiv);
-          flexDiv.appendChild(chevron);
+          card.appendChild(iconDiv);
+          card.appendChild(infoDiv);
+          card.appendChild(chevron);
 
-          link.appendChild(flexDiv);
-          card.appendChild(link);
           examList.appendChild(card);
         });
       }
@@ -691,11 +792,9 @@
 
       function getNextExam() {
         const now = new Date();
-        // Parse exam dates and find the next exam date/time >= now (2pm to 5pm)
         const upcomingExams = examSchedule
           .map(exam => {
             const [dd, mm, yyyy] = exam.date.split("-");
-            // Exam start and end datetime
             const examStart = new Date(`${yyyy}-${mm}-${dd}T14:00:00`);
             const examEnd = new Date(`${yyyy}-${mm}-${dd}T17:00:00`);
             return { ...exam, examStart, examEnd };
@@ -706,7 +805,6 @@
         return upcomingExams.length > 0 ? upcomingExams[0] : null;
       }
 
-      // Format time left as "X days HH:mm:ss"
       function formatTimeLeft(ms) {
         if (ms <= 0) return "0s";
         const totalSeconds = Math.floor(ms / 1000);
@@ -757,7 +855,6 @@
             timeLeftMs = nextExam.examEnd - now;
             label = "Ends in";
           } else {
-            // Exam passed, clear interval and rerender
             clearInterval(nextExamInterval);
             nextExamInterval = null;
             render();
@@ -770,18 +867,14 @@
           nextExamDateSpan.textContent = examDateStr;
           nextExamTimeLeftSpan.textContent = `${label}: ${timeLeftStr}`;
 
-          // Update color class based on hours passed since now to exam start
           const msToStart = nextExam.examStart - now;
           const hoursToStart = msToStart / (1000 * 60 * 60);
 
-          // Remove all color classes first
           nextExamDiv.classList.remove("hour1", "hour2", "hour3", "hour4plus", "alert", "default");
 
           if (label === "Starts in" && msToStart <= 30 * 60 * 1000 && msToStart > 0) {
-            // Alert style for last 30 minutes before exam start
             nextExamDiv.classList.add("alert");
           } else if (label === "Starts in" && msToStart > 0) {
-            // Change color every hour passed, counting down from exam start
             if (hoursToStart <= 1) {
               nextExamDiv.classList.add("hour1");
             } else if (hoursToStart <= 2) {
@@ -792,7 +885,6 @@
               nextExamDiv.classList.add("hour4plus");
             }
           } else {
-            // During exam or after start, use default style
             nextExamDiv.classList.add("default");
           }
         }
@@ -821,42 +913,14 @@
         const next5pm = new Date(now);
         next5pm.setHours(17, 0, 0, 0);
         if (now >= next5pm) {
-          // If current time is after 5pm, schedule for next day 5pm
           next5pm.setDate(next5pm.getDate() + 1);
         }
         const msUntilNext5pm = next5pm - now;
         setTimeout(() => {
           updateNextExamNotification();
+          render();
           scheduleNextUpdate();
         }, msUntilNext5pm);
-      }
-
-      // Periodically check for collapsing cards every minute
-      function startCollapseChecker() {
-        setInterval(() => {
-          const now = new Date();
-          const cards = Array.from(examList.children);
-          cards.forEach(card => {
-            if (card.classList.contains("collapsing")) return; // Already collapsing
-            const paper = card.querySelector("h3")?.textContent;
-            if (!paper) return;
-            const exam = examSchedule.find(e => e.paper === paper);
-            if (!exam) return;
-            const examEnd = getExamEndDateTime(exam);
-            const twoHoursAfterEnd = new Date(examEnd.getTime() + 2 * 60 * 60 * 1000);
-            if (now >= twoHoursAfterEnd) {
-              card.classList.add("collapsing");
-              card.addEventListener("animationend", () => {
-                if (card.parentNode) {
-                  card.parentNode.removeChild(card);
-                }
-                if (examList.children.length === 0) {
-                  noResults.classList.remove("hidden");
-                }
-              });
-            }
-          });
-        }, 60000); // every 60 seconds
       }
 
       function render() {
@@ -865,12 +929,10 @@
         updateNextExamNotification();
       }
 
-      // Initial render
-      render();
       updateCurrentDate();
       setInterval(updateCurrentDate, 1000);
+      render();
       scheduleNextUpdate();
-      startCollapseChecker();
     })();
   </script>
 </body>

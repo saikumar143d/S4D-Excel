@@ -19,8 +19,8 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       color: #374151;
-      font-size: 14px;
-      line-height: 1.4;
+      font-size: 13px;
+      line-height: 1.35;
     }
     #app {
       max-width: 900px;
@@ -34,18 +34,18 @@
       background: white;
       box-shadow: 0 2px 8px rgb(0 0 0 / 0.06);
       border-radius: 0.75rem;
-      padding: 0.75rem 1rem;
+      padding: 0.65rem 1rem;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.6rem;
       user-select: none;
       flex-wrap: wrap;
       position: relative;
       z-index: 10;
     }
     #headerIconWrapper {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 0.5rem;
       border: 2.5px solid #f97316;
       background: white;
@@ -61,8 +61,8 @@
       box-shadow: 0 3px 10px rgb(249 115 22 / 0.6);
     }
     #headerIcon {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 0.4rem;
       object-fit: cover;
       background: transparent;
@@ -76,7 +76,7 @@
       background-clip: text;
       text-fill-color: transparent;
       font-weight: 700;
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       line-height: 1.2;
       user-select: text;
       white-space: nowrap;
@@ -89,7 +89,7 @@
       gap: 0.3rem;
       font-weight: 500;
       color: #6b7280;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       user-select: text;
       white-space: nowrap;
       margin-top: 0.1rem;
@@ -98,8 +98,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       cursor: pointer;
       color: #f97316;
       background-color: transparent;
@@ -110,7 +110,7 @@
       flex-shrink: 0;
       position: relative;
       transition: color 0.3s ease;
-      font-size: 1rem;
+      font-size: 0.95rem;
       line-height: 1;
       box-shadow: 0 1px 5px rgb(249 115 22 / 0.3);
       user-select: none;
@@ -126,7 +126,7 @@
       padding: 0.4rem 0.9rem;
       border-radius: 9999px;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       box-shadow: 0 2px 6px rgb(5 95 70 / 0.15);
       user-select: none;
       max-width: 900px;
@@ -142,7 +142,7 @@
       justify-content: center;
     }
     #currentDateContainer i {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       flex-shrink: 0;
     }
     #currentDateContainer .divider {
@@ -155,11 +155,11 @@
     #nextExamNotification > div {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.45rem;
       font-weight: 700;
       font-size: 1rem;
       border-radius: 1rem;
-      padding: 0.5rem 1rem;
+      padding: 0.45rem 1rem;
       cursor: pointer;
       user-select: none;
       overflow: hidden;
@@ -225,21 +225,23 @@
       color: inherit;
     }
     #nextExamNotification strong {
-      flex-shrink: 1;
+      flex-shrink: 0;
+      font-weight: 700;
+      font-size: 1.05rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 55vw;
-      font-size: 1.1rem;
+      max-width: 60%;
       line-height: 1.3;
       color: inherit;
+      user-select: text;
     }
     #nextExamNotification span.date {
       flex-shrink: 0;
       white-space: nowrap;
       min-width: 6.5rem;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-align: right;
       color: inherit;
     }
@@ -255,7 +257,7 @@
     @media (max-width: 720px) {
       #nextExamNotification > div {
         flex-wrap: wrap;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         gap: 0.4rem;
       }
       #nextExamNotification strong {
@@ -280,9 +282,9 @@
     }
     /* Date chips */
     .date-chip {
-      padding: 0.35rem 0.9rem;
+      padding: 0.3rem 0.8rem;
       border-radius: 9999px;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       border: 2px solid #f97316;
       background-color: white;
@@ -291,17 +293,17 @@
       transition: all 0.3s ease;
       cursor: pointer;
       user-select: none;
-      min-width: 100px;
+      min-width: 95px;
       text-align: center;
       white-space: nowrap;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.35rem;
+      gap: 0.3rem;
       flex-shrink: 0;
     }
     .date-chip i {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: #f97316;
       flex-shrink: 0;
     }
@@ -320,25 +322,36 @@
     }
     .date-chip:disabled {
       cursor: not-allowed;
-      opacity: 0.5;
+      opacity: 0.4;
       background-color: #f3f4f6 !important;
       color: #9ca3af !important;
       border-color: #d1d5db !important;
       box-shadow: none;
       transform: none;
     }
+    /* Masked style for completed dates */
+    .date-chip.masked {
+      cursor: default;
+      background-color: #f3f4f6 !important;
+      color: #9ca3af !important;
+      border-color: #d1d5db !important;
+      box-shadow: none !important;
+      opacity: 0.5;
+      pointer-events: none;
+      user-select: none;
+    }
     /* Exam cards grid */
     #examList {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
+      gap: 0.9rem;
       width: 100%;
     }
     /* Exam card */
     .exam-card {
       background: white;
-      border-radius: 0.75rem;
-      box-shadow: 0 5px 15px rgb(0 0 0 / 0.07);
+      border-radius: 0.6rem;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.06);
       overflow: hidden;
       cursor: pointer;
       transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -347,14 +360,14 @@
       border: 3px solid transparent;
       animation: slideIn 0.35s ease forwards;
       user-select: none;
-      min-height: 85px;
+      min-height: 75px;
       align-items: center;
-      padding: 0.7rem 1.25rem;
-      gap: 1rem;
+      padding: 0.55rem 1rem;
+      gap: 0.85rem;
     }
     .exam-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 28px rgb(0 0 0 / 0.15);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 22px rgb(0 0 0 / 0.15);
       border-color: #f97316;
     }
     .exam-card.collapsing {
@@ -371,22 +384,22 @@
     }
     .exam-card .icon-wrapper {
       flex-shrink: 0;
-      width: 44px;
-      height: 44px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background-color: white;
-      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      box-shadow: 0 1px 6px rgb(0 0 0 / 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
       color: #374151;
-      font-size: 1.4rem;
+      font-size: 1.25rem;
       transition: color 0.3s ease;
       user-select: none;
     }
     .exam-card:hover .icon-wrapper {
       color: #f97316;
-      box-shadow: 0 5px 18px rgb(249 115 22 / 0.5);
+      box-shadow: 0 4px 15px rgb(249 115 22 / 0.5);
     }
     .exam-card .info {
       flex-grow: 1;
@@ -394,11 +407,11 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 0.15rem;
+      gap: 0.12rem;
       overflow: hidden;
     }
     .exam-card h3 {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
       color: #111827;
       margin: 0;
@@ -410,8 +423,8 @@
     }
     .exam-card .sub-info {
       display: flex;
-      gap: 1rem;
-      font-size: 0.85rem;
+      gap: 0.9rem;
+      font-size: 0.8rem;
       color: #6b7280;
       font-weight: 600;
       user-select: none;
@@ -421,17 +434,17 @@
       white-space: nowrap;
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.25rem;
     }
     .exam-card .sub-info span i {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       color: #9ca3af;
       flex-shrink: 0;
     }
     .exam-card .chevron {
       flex-shrink: 0;
       color: #9ca3af;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       transition: color 0.3s ease;
       user-select: none;
     }
@@ -443,12 +456,12 @@
       max-width: 600px;
       margin: 3rem auto;
       color: #9ca3af;
-      font-size: 1.1rem;
+      font-size: 1rem;
       user-select: none;
       text-align: center;
     }
     #noResults i {
-      font-size: 3.5rem;
+      font-size: 3rem;
       margin-bottom: 1rem;
       color: #d1d5db;
     }
@@ -689,18 +702,21 @@
           const examsOnDate = examSchedule.filter(e => e.date === date);
           const allPassed = examsOnDate.every(exam => getExamEndDateTime(exam) < now);
 
-          if (allPassed) return;
-
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "date-chip";
           btn.setAttribute("aria-pressed", selectedDate === date);
           btn.title = `Filter exams on ${date}`;
           btn.innerHTML = `<i class="fas fa-calendar-alt" aria-hidden="true"></i>${date}`;
-          btn.addEventListener("click", () => {
-            selectedDate = selectedDate === date ? null : date;
-            render();
-          });
+          if (allPassed) {
+            btn.classList.add("masked");
+            btn.disabled = true;
+          } else {
+            btn.addEventListener("click", () => {
+              selectedDate = selectedDate === date ? null : date;
+              render();
+            });
+          }
           dateFilters.appendChild(btn);
         });
       }

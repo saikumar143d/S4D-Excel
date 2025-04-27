@@ -158,6 +158,12 @@
       outline: none;
       box-shadow: 0 0 8px #374151cc;
     }
+    .control-btn:active {
+      background-color: #111827;
+      border-color: #1e40af;
+      color: #dbeafe;
+      box-shadow: 0 0 12px #1e40afcc;
+    }
     body.dark .control-btn {
       color: #f9fafb;
       border-color: #f9fafb;
@@ -168,6 +174,12 @@
       color: #1f2937;
       border-color: #d1d5db;
       box-shadow: 0 0 8px #d1d5dbcc;
+    }
+    body.dark .control-btn:active {
+      background-color: #e0e7ff;
+      border-color: #3730a3;
+      color: #3730a3;
+      box-shadow: 0 0 12px #3730a3cc;
     }
     #currentDateContainer {
       margin-top: 1.5rem;
@@ -253,11 +265,17 @@
     }
     #nextExamNotification > div:hover,
     #nextExamNotification > div:focus-visible {
-      background-color: #374151;
+      background-color: #4b5563;
       color: #f9fafb;
-      border-color: #4b5563;
+      border-color: #6b7280;
       outline: none;
-      box-shadow: 0 0 16px #4b5563cc;
+      box-shadow: 0 0 20px #6b7280cc;
+    }
+    #nextExamNotification > div:active {
+      background-color: #1f2937;
+      border-color: #2563eb;
+      color: #bfdbfe;
+      box-shadow: 0 0 24px #2563ebcc;
     }
     #nextExamNotification > div.default {
       background-color: transparent;
@@ -413,6 +431,13 @@
       box-shadow: 0 0 12px #4b5563cc;
       transform: scale(1.1);
     }
+    .date-chip:active:not(:disabled) {
+      background-color: #1f2937;
+      border-color: #2563eb;
+      color: #bfdbfe;
+      box-shadow: 0 0 16px #2563ebcc;
+      transform: scale(1.05);
+    }
     .date-chip[aria-pressed="true"] {
       background-color: #374151;
       color: #f9fafb;
@@ -449,7 +474,6 @@
     }
     /* Exam card */
     .exam-card {
-      background-color: #ffffff;
       border-radius: 1rem;
       overflow: hidden;
       cursor: pointer;
@@ -462,21 +486,35 @@
       align-items: center;
       padding: 0.6rem 1rem;
       gap: 1rem;
-      color: #1f2937;
       box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      color: #1f2937;
+      background-color: #fef9f0; /* default light bg */
     }
     body.dark .exam-card {
-      background-color: #374151;
-      color: #f9fafb;
       box-shadow: 0 2px 8px rgb(75 85 99 / 0.5);
+      color: #f9fafb;
     }
     .exam-card:hover,
     .exam-card:focus-visible {
-      background-color: #374151;
-      color: #f9fafb;
-      border-color: #4b5563;
       outline: none;
       box-shadow: 0 0 16px #4b5563cc;
+      border-color: #4b5563;
+      color: #1f2937;
+    }
+    body.dark .exam-card:hover,
+    body.dark .exam-card:focus-visible {
+      color: #f9fafb;
+    }
+    .exam-card:active {
+      box-shadow: 0 0 20px #2563ebcc;
+      border-color: #2563eb;
+      color: #1e40af;
+      background-color: #dbeafe;
+    }
+    body.dark .exam-card:active {
+      background-color: #1e40af;
+      color: #dbeafe;
+      box-shadow: 0 0 20px #93c5fdcc;
     }
     .exam-card.opacity-50 {
       opacity: 0.3;
@@ -516,6 +554,14 @@
     .exam-card:focus-visible .icon-wrapper {
       color: #f9fafb;
       filter: drop-shadow(0 0 2px #f9fafb);
+    }
+    .exam-card:active .icon-wrapper {
+      color: #1e40af;
+      filter: drop-shadow(0 0 4px #93c5fd);
+    }
+    body.dark .exam-card:active .icon-wrapper {
+      color: #dbeafe;
+      filter: drop-shadow(0 0 4px #93c5fd);
     }
     .exam-card .info {
       flex-grow: 1;
@@ -577,6 +623,70 @@
     .exam-card:hover .chevron,
     .exam-card:focus-visible .chevron {
       color: #f9fafb;
+    }
+    .exam-card:active .chevron {
+      color: #1e40af;
+    }
+    body.dark .exam-card:active .chevron {
+      color: #dbeafe;
+    }
+    /* Subject color theming for light mode */
+    .exam-scm {
+      background-color: #dbeafe; /* light blue */
+      color: #1e40af;
+    }
+    .exam-vm {
+      background-color: #fef3c7; /* light yellow */
+      color: #92400e;
+    }
+    .exam-er {
+      background-color: #d1fae5; /* light green */
+      color: #065f46;
+    }
+    .exam-mr {
+      background-color: #fee2e2; /* light red */
+      color: #991b1b;
+    }
+    .exam-irbr {
+      background-color: #ede9fe; /* light purple */
+      color: #5b21b6;
+    }
+    .exam-mbr {
+      background-color: #ffe4e6; /* light pink */
+      color: #9f1239;
+    }
+    .exam-rc {
+      background-color: #e0e7ff; /* light indigo */
+      color: #3730a3;
+    }
+    /* Subject color theming for dark mode */
+    body.dark .exam-scm {
+      background-color: #1e40af;
+      color: #dbeafe;
+    }
+    body.dark .exam-vm {
+      background-color: #92400e;
+      color: #fef3c7;
+    }
+    body.dark .exam-er {
+      background-color: #065f46;
+      color: #d1fae5;
+    }
+    body.dark .exam-mr {
+      background-color: #991b1b;
+      color: #fee2e2;
+    }
+    body.dark .exam-irbr {
+      background-color: #5b21b6;
+      color: #ede9fe;
+    }
+    body.dark .exam-mbr {
+      background-color: #9f1239;
+      color: #ffe4e6;
+    }
+    body.dark .exam-rc {
+      background-color: #3730a3;
+      color: #e0e7ff;
     }
     /* No results */
     #noResults {
@@ -680,6 +790,7 @@
           path: "https://telegra.ph/androidneeds-03-02",
           icon: "truck-loading",
           short: "SCM",
+          className: "exam-scm",
         },
         {
           date: "23-04-2025",
@@ -689,6 +800,7 @@
           path: "https://telegra.ph/How-to-Make-Your-Own-Hand-Sanitizer-04-25",
           icon: "palette",
           short: "VM",
+          className: "exam-vm",
         },
         {
           date: "24-04-2025",
@@ -698,6 +810,7 @@
           path: "https://telegra.ph/Fraudsters-Try-To-Scam-PM-CARES-Donors-With-Fake-UPI-ID-03-31",
           icon: "shopping-cart",
           short: "ER",
+          className: "exam-er",
         },
         {
           date: "25-04-2025",
@@ -707,6 +820,7 @@
           path: "https://telegra.ph/Top-sites-for-career-04-11",
           icon: "chart-line",
           short: "MR",
+          className: "exam-mr",
         },
         {
           date: "28-04-2025",
@@ -716,6 +830,7 @@
           path: "IR&BR.html",
           icon: "globe-americas",
           short: "IR & BR",
+          className: "exam-irbr",
         },
         {
           date: "29-04-2025",
@@ -725,6 +840,7 @@
           path: "https://telegra.ph/Projects-to-do-04-12",
           icon: "store",
           short: "MBR",
+          className: "exam-mbr",
         },
         {
           date: "30-04-2025",
@@ -734,6 +850,7 @@
           path: "https://telegra.ph/Big-news-03-30",
           icon: "comments",
           short: "RC",
+          className: "exam-rc",
         },
       ];
 
@@ -908,14 +1025,15 @@
           if (isPast) return;
 
           const card = document.createElement("article");
-          card.className = `exam-card`;
+          card.className = `exam-card ${exam.className}`;
           card.style.animationDelay = `${index * 0.1}s`;
           card.setAttribute("tabindex", "0");
           card.setAttribute("role", "link");
           card.setAttribute("aria-label", `Open details for exam ${exam.paper} on ${exam.date}`);
 
           card.addEventListener("click", () => {
-            window.open(exam.path, "_blank", "noopener,noreferrer");
+            // Open in same tab
+            window.location.href = exam.path;
           });
           card.addEventListener("keydown", (e) => {
             if (e.key === "Enter" || e.key === " ") {
@@ -1094,7 +1212,8 @@
           })}, click to open details`
         );
         nextExamDiv.onclick = () => {
-          window.open(nextExam.path, "_blank", "noopener,noreferrer");
+          // Open in same tab
+          window.location.href = nextExam.path;
         };
         nextExamDiv.onkeypress = (e) => {
           if (e.key === "Enter" || e.key === " ") {

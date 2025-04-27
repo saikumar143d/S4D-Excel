@@ -1,0 +1,168 @@
+<html class="scroll-smooth" lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   405: INTERNATIONAL RETAILING &amp; BENCH MARK RETAILERS
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&amp;family=Open+Sans&amp;display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+   body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #191919;
+      color: #e5e7eb;
+      min-height: 100vh;
+    }
+    h1, h2 {
+      font-family: 'Merriweather', serif;
+    }
+  </style>
+ </head>
+ <body class="bg-gray-900 text-gray-200">
+  <header class="bg-gray-800 sticky top-0 z-50 shadow-md">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+    <div class="flex items-center space-x-3">
+     <img alt="Icon representing international retailing and benchmarking with a globe, shopping cart, and bar chart" class="w-12 h-12 rounded-md" height="78" src="https://storage.googleapis.com/a1aa/image/d6845614-fc67-412c-4bd0-4bc85375bfb1.jpg" width="78"/>
+     <h1 class="text-xl sm:text-2xl font-bold tracking-tight">
+      405: INTERNATIONAL RETAILING &amp; BENCH MARK RETAILERS
+     </h1>
+    </div>
+   </div>
+  </header>
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+   <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-3">
+     Description
+    </h2>
+    <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-3xl">
+     To develop an understanding of the Benchmark practices and strategies in retail management internationally
+    </p>
+   </section>
+   <section>
+    <h2 class="text-2xl font-semibold mb-6">
+     Units Overview
+    </h2>
+    <div class="space-y-8">
+     <!-- Unit I -->
+     <article class="bg-gray-800 rounded-lg p-6 shadow-lg">
+      <h3 class="text-xl font-semibold mb-3">
+       Unit I
+      </h3>
+      <p class="font-semibold mb-2">
+       International Retailing: An overview
+      </p>
+      <ul class="list-disc list-inside space-y-1 text-gray-300">
+       <li>
+        Introduction to International Retailing
+       </li>
+       <li>
+        Type of Retailers
+       </li>
+       <li>
+        Multi Channel Retailing
+       </li>
+       <li>
+        Global Customer Buying Behavior
+       </li>
+      </ul>
+     </article>
+     <!-- Unit II -->
+     <article class="bg-gray-800 rounded-lg p-6 shadow-lg">
+      <h3 class="text-xl font-semibold mb-3">
+       Unit II
+      </h3>
+      <p class="font-semibold mb-2">
+       International Retailing Strategy - An Overview
+      </p>
+      <ul class="list-disc list-inside space-y-1 text-gray-300">
+       <li>
+        Retail Market Strategy
+       </li>
+       <li>
+        Finance Strategy
+       </li>
+       <li>
+        Location Strategy
+       </li>
+       <li>
+        HR Strategy
+       </li>
+      </ul>
+     </article>
+     <!-- Unit III -->
+     <article class="bg-gray-800 rounded-lg p-6 shadow-lg">
+      <h3 class="text-xl font-semibold mb-3">
+       Unit III
+      </h3>
+      <p class="font-semibold mb-2">
+       Retailing Practices - USA (Case Studies)
+      </p>
+      <ul class="list-disc list-inside space-y-1 text-gray-300">
+       <li>
+        Wal-Mart
+       </li>
+       <li>
+        Kroger
+       </li>
+       <li>
+        Albertsons
+       </li>
+       <li>
+        JC Penny
+       </li>
+      </ul>
+     </article>
+     <!-- Unit IV -->
+     <article class="bg-gray-800 rounded-lg p-6 shadow-lg">
+      <h3 class="text-xl font-semibold mb-3">
+       Unit IV
+      </h3>
+      <p class="font-semibold mb-2">
+       Retailing Practices - EU (Case Studies)
+      </p>
+      <ul class="list-disc list-inside space-y-1 text-gray-300">
+       <li>
+        J. Sainsbury (UK)
+       </li>
+       <li>
+        Carrefour (France)
+       </li>
+       <li>
+        Metro (Germany)
+       </li>
+       <li>
+        Ahold (Netherlands)
+       </li>
+      </ul>
+     </article>
+     <!-- Unit V -->
+     <article class="bg-gray-800 rounded-lg p-6 shadow-lg">
+      <h3 class="text-xl font-semibold mb-3">
+       Unit V
+      </h3>
+      <p class="font-semibold mb-2">
+       Retailing Practices - ASIA (Case Studies)
+      </p>
+      <ul class="list-disc list-inside space-y-1 text-gray-300">
+       <li>
+        Ito Yokada (Japan)
+       </li>
+       <li>
+        Lianhua (China)
+       </li>
+       <li>
+        Big Bazar (India)
+       </li>
+       <li>
+        Reliance (India)
+       </li>
+      </ul>
+     </article>
+    </div>
+   </section>
+  </main>
+ </body>
+</html>

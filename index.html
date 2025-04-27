@@ -5,11 +5,11 @@
   <title>Retail Management</title>
   <link rel="icon" type="image/png" href="https://i.imgur.com/h08m3tz.png" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
     rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
   />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -152,123 +152,147 @@
       border-radius: 1px;
       opacity: 0.8;
     }
+    /* Next exam notification compact styling with enhanced spacing and highlight */
     #nextExamNotification > div {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      font-weight: 700;
-      font-size: 1.1rem;
-      border-radius: 1rem;
-      padding: 0.6rem 1.25rem;
+      gap: 0.15rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 0.5rem;
+      padding: 0.3rem 0.75rem;
       cursor: pointer;
       user-select: none;
       overflow: hidden;
-      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.25s ease;
-      border: 1.5px solid transparent;
-      box-shadow: 0 3px 12px rgb(0 0 0 / 0.07);
-      background-color: #f9fafb;
-      color: #374151;
-      max-width: 100%;
-      margin: 2rem auto 2.5rem auto;
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+      border: 1.2px solid transparent;
+      max-width: 900px;
+      margin: 1.5rem auto 2rem auto;
       flex-wrap: nowrap;
+      box-shadow: 0 1.5px 6px rgb(0 0 0 / 0.07);
+      background-color: #f0f9ff;
+      color: #1e3a8a;
+      font-family: 'Inter', sans-serif;
+      user-select: none;
+      justify-content: space-between;
     }
     #nextExamNotification > div:hover {
-      box-shadow: 0 8px 28px rgb(0 0 0 / 0.15);
-      background-color: #e0e7ff;
+      background-color: #dbeafe;
       color: #1e40af;
-      border-color: #6366f1;
+      box-shadow: 0 4px 12px rgb(30 64 175 / 0.25);
+      border-color: #3b82f6;
     }
     #nextExamNotification > div.default {
       background-color: #f9fafb;
-      color: #4b5563;
+      color: #6b7280;
       border-color: #d1d5db;
-      box-shadow: 0 2px 8px rgb(0 0 0 / 0.05);
+      box-shadow: 0 1.5px 6px rgb(0 0 0 / 0.04);
       cursor: default;
     }
     #nextExamNotification > div.hour1 {
-      color: #1e3a8a;
-      background-color: #c7d2fe;
-      border-color: #818cf8;
-      box-shadow: 0 4px 14px rgb(129 140 248 / 0.4);
+      background-color: #e0e7ff;
+      color: #3730a3;
+      border-color: #6366f1;
+      box-shadow: 0 3px 10px rgb(99 102 241 / 0.3);
     }
     #nextExamNotification > div.hour2 {
-      color: #4338ca;
-      background-color: #a5b4fc;
-      border-color: #6366f1;
-      box-shadow: 0 4px 14px rgb(99 102 241 / 0.5);
+      background-color: #c7d2fe;
+      color: #312e81;
+      border-color: #4f46e5;
+      box-shadow: 0 3px 10px rgb(79 70 229 / 0.35);
     }
     #nextExamNotification > div.hour3 {
-      color: #7c2d12;
-      background-color: #fed7aa;
-      border-color: #fb923c;
-      box-shadow: 0 4px 14px rgb(251 146 60 / 0.5);
+      background-color: #a5b4fc;
+      color: #1e40af;
+      border-color: #4338ca;
+      box-shadow: 0 3px 10px rgb(67 56 202 / 0.35);
     }
     #nextExamNotification > div.hour4plus {
-      color: #065f46;
-      background-color: #bbf7d0;
-      border-color: #34d399;
-      box-shadow: 0 4px 14px rgb(52 211 153 / 0.5);
+      background-color: #dbeafe;
+      color: #1e40af;
+      border-color: #3b82f6;
+      box-shadow: 0 3px 10px rgb(59 130 246 / 0.35);
     }
     #nextExamNotification > div.alert {
-      color: #b45309;
       background-color: #fef3c7;
+      color: #b45309;
       border-color: #fbbf24;
       animation: pulse 2s infinite ease-in-out;
-      font-weight: 800;
-      box-shadow: 0 0 12px 3px rgb(251 191 36 / 0.7);
+      font-weight: 700;
+      box-shadow: 0 0 10px 2px rgb(251 191 36 / 0.7);
     }
     #nextExamNotification i {
       flex-shrink: 0;
-      font-size: 1.5rem;
-      min-width: 1.5rem;
+      font-size: 1.15rem;
+      min-width: 1.3rem;
       text-align: center;
       color: inherit;
+      user-select: none;
     }
     #nextExamNotification strong {
-      flex-shrink: 0;
+      flex-shrink: 1;
       font-weight: 700;
-      font-size: 1.15rem;
+      font-size: 1rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 60%;
-      line-height: 1.3;
-      color: inherit;
+      max-width: 50%;
+      line-height: 1.1;
+      color: #dc2626; /* Opposite highlight color: red-600 */
       user-select: text;
+      margin-right: 0.5rem;
     }
     #nextExamNotification span.date {
       flex-shrink: 0;
       white-space: nowrap;
-      min-width: 6.5rem;
+      min-width: 5.5rem;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-align: right;
       color: inherit;
+      user-select: none;
+      margin-right: 0.5rem;
     }
     #nextExamNotification span.timeleft {
       flex-shrink: 0;
       white-space: nowrap;
       font-weight: 700;
-      min-width: 8.5rem;
+      min-width: 7.5rem;
       text-align: right;
       font-variant-numeric: tabular-nums;
       color: inherit;
+      user-select: none;
     }
     @media (max-width: 720px) {
       #nextExamNotification > div {
-        flex-wrap: wrap;
-        font-size: 0.95rem;
-        gap: 0.4rem;
+        flex-wrap: nowrap;
+        font-size: 0.8rem;
+        gap: 0.1rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.3rem;
+        justify-content: space-between;
+        align-items: center;
       }
       #nextExamNotification strong {
-        max-width: 100%;
-        white-space: normal;
+        max-width: 40%;
+        white-space: nowrap;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #dc2626; /* Opposite highlight color */
+        margin-right: 0.3rem;
       }
       #nextExamNotification span.date,
       #nextExamNotification span.timeleft {
         min-width: auto;
-        text-align: left;
-        flex: 1 1 100%;
+        text-align: right;
+        flex: 0 0 auto;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 0.3rem;
+      }
+      #nextExamNotification i {
+        font-size: 1.1rem;
+        min-width: 1.2rem;
       }
     }
     /* Date filters container */
@@ -280,9 +304,9 @@
       display: flex;
       width: 100%;
     }
-    /* Date chips */
+    /* Date chips without calendar icon and aligned text */
     .date-chip {
-      padding: 0.3rem 0.8rem;
+      padding: 0.3rem 1rem;
       border-radius: 9999px;
       font-size: 0.8rem;
       font-weight: 600;
@@ -299,12 +323,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.3rem;
-      flex-shrink: 0;
-    }
-    .date-chip i {
-      font-size: 0.9rem;
-      color: #f97316;
+      gap: 0;
       flex-shrink: 0;
     }
     .date-chip:hover:not(:disabled) {
@@ -498,7 +517,11 @@
   <div id="app" role="main" aria-label="Retail Management Application">
     <header>
       <div id="headerIconWrapper" aria-label="Retail Management logo with simple orange border" role="img">
-        <img id="headerIcon" src="https://i.giphy.com/4cJAkBS9KAOz2px44s.webp" alt="Animated gif icon showing a colorful swirling pattern with bright neon colors in motion" />
+        <img
+          id="headerIcon"
+          src="https://i.giphy.com/4cJAkBS9KAOz2px44s.webp"
+          alt="Animated gif icon showing a colorful swirling pattern with bright neon colors in motion"
+        />
       </div>
       <div style="flex-grow:1; min-width:0;">
         <h1 id="retailTitle" class="select-text">Retail Management</h1>
@@ -506,30 +529,166 @@
           <p class="m-0">4th SEMESTER (जय श्री राम)</p>
         </div>
       </div>
-      <button id="audioControlBtn" aria-label="Mute audio" title="Mute audio" type="button" tabindex="0" aria-pressed="false">
-        <i class="fas fa-volume-up" aria-hidden="true"></i>
+      <button
+        id="audioControlBtn"
+        aria-label="Unmute audio"
+        title="Unmute audio"
+        type="button"
+        tabindex="0"
+        aria-pressed="true"
+      >
+        <i class="fas fa-volume-mute" aria-hidden="true"></i>
       </button>
     </header>
 
-    <div id="currentDateContainer" aria-live="polite" aria-atomic="true" title="Current date and time">
+    <div
+      id="currentDateContainer"
+      aria-live="polite"
+      aria-atomic="true"
+      title="Current date and time"
+    >
       <i class="fas fa-calendar-day" aria-hidden="true"></i>
-      <span class="date-part">Loading...</span>
+      <span class="date-part">Sun, 27 Apr, 2025</span>
       <span class="divider" aria-hidden="true"></span>
-      <span class="time-part"></span>
+      <span class="time-part">2:46:25 pm</span>
     </div>
 
     <section id="nextExamNotification" aria-live="polite" aria-atomic="true">
-      <div role="link" tabindex="0" aria-label="Next exam notification" class="default">
+      <div
+        role="link"
+        tabindex="0"
+        aria-label="Next exam is International Retailing and Bench Mark Retailers (IR & BR) on Mon, 28 Apr, click to open details"
+        class="cursor-pointer hour4plus"
+      >
         <i class="fas fa-bell" aria-hidden="true"></i>
-        <strong class="truncate">Loading next exam...</strong>
-        <span class="date"></span>
-        <span class="timeleft"></span>
+        <strong class="truncate" data-full="International Retailing and Bench Mark Retailers (IR & BR)">IR & BR</strong>
+        <span class="date">Mon, 28 Apr</span>
+        <span class="timeleft">Starts in: 23:13:34</span>
       </div>
     </section>
 
     <main>
-      <div id="dateFilters" class="flex"></div>
-      <div id="examList" aria-live="polite" aria-atomic="true"></div>
+      <div id="dateFilters" class="flex">
+        <button
+          type="button"
+          class="date-chip masked"
+          aria-pressed="false"
+          title="Filter exams on 22-04-2025"
+          disabled
+        >
+          22-04-2025
+        </button>
+        <button
+          type="button"
+          class="date-chip masked"
+          aria-pressed="false"
+          title="Filter exams on 23-04-2025"
+          disabled
+        >
+          23-04-2025
+        </button>
+        <button
+          type="button"
+          class="date-chip masked"
+          aria-pressed="false"
+          title="Filter exams on 24-04-2025"
+          disabled
+        >
+          24-04-2025
+        </button>
+        <button
+          type="button"
+          class="date-chip masked"
+          aria-pressed="false"
+          title="Filter exams on 25-04-2025"
+          disabled
+        >
+          25-04-2025
+        </button>
+        <button
+          type="button"
+          class="date-chip"
+          aria-pressed="false"
+          title="Filter exams on 28-04-2025"
+        >
+          28-04-2025
+        </button>
+        <button
+          type="button"
+          class="date-chip"
+          aria-pressed="false"
+          title="Filter exams on 29-04-2025"
+        >
+          29-04-2025
+        </button>
+        <button
+          type="button"
+          class="date-chip"
+          aria-pressed="false"
+          title="Filter exams on 30-04-2025"
+        >
+          30-04-2025
+        </button>
+      </div>
+      <div id="examList" aria-live="polite" aria-atomic="true">
+        <article
+          class="exam-card bg-yellow-100 border-yellow-300"
+          tabindex="0"
+          role="link"
+          aria-label="Open details for exam International Retailing and Bench Mark Retailers (IR & BR) on 28-04-2025"
+          style="animation-delay: 0s"
+        >
+          <div class="icon-wrapper">
+            <i class="fas fa-globe-americas" aria-hidden="true"></i>
+          </div>
+          <div class="info">
+            <h3>International Retailing and Bench Mark Retailers (IR & BR)</h3>
+            <div class="sub-info">
+              <span><i class="fas fa-calendar-day" aria-hidden="true"></i> Monday</span>
+              <span><i class="fas fa-barcode" aria-hidden="true"></i> ARM-S-451-B</span>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right chevron" aria-hidden="true"></i>
+        </article>
+        <article
+          class="exam-card bg-indigo-100 border-indigo-300"
+          tabindex="0"
+          role="link"
+          aria-label="Open details for exam Multi Brand Retailing (MBR) on 29-04-2025"
+          style="animation-delay: 0.1s"
+        >
+          <div class="icon-wrapper">
+            <i class="fas fa-store" aria-hidden="true"></i>
+          </div>
+          <div class="info">
+            <h3>Multi Brand Retailing (MBR)</h3>
+            <div class="sub-info">
+              <span><i class="fas fa-calendar-day" aria-hidden="true"></i> Tuesday</span>
+              <span><i class="fas fa-barcode" aria-hidden="true"></i> ARM-S-452-B</span>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right chevron" aria-hidden="true"></i>
+        </article>
+        <article
+          class="exam-card bg-red-100 border-red-300"
+          tabindex="0"
+          role="link"
+          aria-label="Open details for exam Retail Communications (RC) on 30-04-2025"
+          style="animation-delay: 0.2s"
+        >
+          <div class="icon-wrapper">
+            <i class="fas fa-comments" aria-hidden="true"></i>
+          </div>
+          <div class="info">
+            <h3>Retail Communications (RC)</h3>
+            <div class="sub-info">
+              <span><i class="fas fa-calendar-day" aria-hidden="true"></i> Wednesday</span>
+              <span><i class="fas fa-barcode" aria-hidden="true"></i> ARM-S-453-B</span>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right chevron" aria-hidden="true"></i>
+        </article>
+      </div>
       <div id="noResults" class="hidden" role="alert" aria-live="assertive">
         <i class="fas fa-search" aria-hidden="true"></i>
         <p>No exams found matching your search.</p>
@@ -548,6 +707,7 @@
           path: "https://telegra.ph/androidneeds-03-02",
           color: "bg-blue-100 border-blue-300",
           icon: "truck-loading",
+          short: "SCM",
         },
         {
           date: "23-04-2025",
@@ -557,6 +717,7 @@
           path: "https://telegra.ph/How-to-Make-Your-Own-Hand-Sanitizer-04-25",
           color: "bg-pink-100 border-pink-300",
           icon: "palette",
+          short: "VM",
         },
         {
           date: "24-04-2025",
@@ -566,6 +727,7 @@
           path: "https://telegra.ph/Fraudsters-Try-To-Scam-PM-CARES-Donors-With-Fake-UPI-ID-03-31",
           color: "bg-purple-100 border-purple-300",
           icon: "shopping-cart",
+          short: "ER",
         },
         {
           date: "25-04-2025",
@@ -575,6 +737,7 @@
           path: "https://telegra.ph/Top-sites-for-career-04-11",
           color: "bg-green-100 border-green-300",
           icon: "chart-line",
+          short: "MR",
         },
         {
           date: "28-04-2025",
@@ -584,6 +747,7 @@
           path: "https://telegra.ph/The-Deverakonda-Foundation-04-26",
           color: "bg-yellow-100 border-yellow-300",
           icon: "globe-americas",
+          short: "IR & BR",
         },
         {
           date: "29-04-2025",
@@ -593,6 +757,7 @@
           path: "https://telegra.ph/Projects-to-do-04-12",
           color: "bg-indigo-100 border-indigo-300",
           icon: "store",
+          short: "MBR",
         },
         {
           date: "30-04-2025",
@@ -602,6 +767,7 @@
           path: "https://telegra.ph/Big-news-03-30",
           color: "bg-red-100 border-red-300",
           icon: "comments",
+          short: "RC",
         },
       ];
 
@@ -620,7 +786,9 @@
       const nextExamTimeLeftSpan = nextExamDiv.querySelector("span.timeleft");
 
       // Audio setup
-      const audio = new Audio("https://od.lk/s/NDJfNDc5OTY3MjNf/Truth%20on%20the%20Wall%20%28Audio%29%20_%20Mangalavaaram%20_%20Payal%20Rajput%20_%20Ajay%20Bhupathi%20_%20B%20Ajaneesh%20Loknath.m4a");
+      const audio = new Audio(
+        "https://od.lk/s/NDJfNDc5OTY3MjNf/Truth%20on%20the%20Wall%20%28Audio%29%20_%20Mangalavaaram%20_%20Payal%20Rajput%20_%20Ajay%20Bhupathi%20_%20B%20Ajaneesh%20Loknath.m4a"
+      );
       audio.volume = 0.3;
       audio.preload = "auto";
       audio.autoplay = true;
@@ -685,7 +853,7 @@
       }
 
       function filterExams() {
-        return examSchedule.filter(exam => {
+        return examSchedule.filter((exam) => {
           if (selectedDate && exam.date !== selectedDate) return false;
           const now = new Date();
           const examEnd = getExamEndDateTime(exam);
@@ -699,15 +867,15 @@
 
         dateFilters.innerHTML = "";
         uniqueDates.forEach((date) => {
-          const examsOnDate = examSchedule.filter(e => e.date === date);
-          const allPassed = examsOnDate.every(exam => getExamEndDateTime(exam) < now);
+          const examsOnDate = examSchedule.filter((e) => e.date === date);
+          const allPassed = examsOnDate.every((exam) => getExamEndDateTime(exam) < now);
 
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "date-chip";
           btn.setAttribute("aria-pressed", selectedDate === date);
           btn.title = `Filter exams on ${date}`;
-          btn.innerHTML = `<i class="fas fa-calendar-alt" aria-hidden="true"></i>${date}`;
+          btn.textContent = date;
           if (allPassed) {
             btn.classList.add("masked");
             btn.disabled = true;
@@ -798,8 +966,8 @@
 
       function updateCurrentDate() {
         const now = new Date();
-        const optionsDate = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-        const optionsTime = { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true };
+        const optionsDate = { weekday: "short", year: "numeric", month: "short", day: "numeric" };
+        const optionsTime = { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true };
         const dateStr = now.toLocaleDateString(undefined, optionsDate);
         const timeStr = now.toLocaleTimeString(undefined, optionsTime);
         currentDatePart.textContent = dateStr;
@@ -809,13 +977,13 @@
       function getNextExam() {
         const now = new Date();
         const upcomingExams = examSchedule
-          .map(exam => {
+          .map((exam) => {
             const [dd, mm, yyyy] = exam.date.split("-");
             const examStart = new Date(`${yyyy}-${mm}-${dd}T14:00:00`);
             const examEnd = new Date(`${yyyy}-${mm}-${dd}T17:00:00`);
             return { ...exam, examStart, examEnd };
           })
-          .filter(exam => exam.examEnd >= now)
+          .filter((exam) => exam.examEnd >= now)
           .sort((a, b) => a.examStart - b.examStart);
 
         return upcomingExams.length > 0 ? upcomingExams[0] : null;
@@ -831,9 +999,14 @@
         let result = "";
         if (days > 0) result += days + (days === 1 ? " day " : " days ");
         result +=
-          (hours < 10 ? "0" : "") + hours + ":" +
-          (minutes < 10 ? "0" : "") + minutes + ":" +
-          (seconds < 10 ? "0" : "") + seconds;
+          (hours < 10 ? "0" : "") +
+          hours +
+          ":" +
+          (minutes < 10 ? "0" : "") +
+          minutes +
+          ":" +
+          (seconds < 10 ? "0" : "") +
+          seconds;
         return result;
       }
 
@@ -877,9 +1050,14 @@
             return;
           }
           const timeLeftStr = formatTimeLeft(timeLeftMs);
-          const options = { weekday: 'short', month: 'short', day: 'numeric' };
+          const options = { weekday: "short", month: "short", day: "numeric" };
           const examDateStr = nextExam.examStart.toLocaleDateString(undefined, options);
-          nextExamStrong.textContent = nextExam.paper;
+          // Show short form on mobile, full on desktop
+          if (window.innerWidth <= 720) {
+            nextExamStrong.textContent = nextExam.short || nextExam.paper;
+          } else {
+            nextExamStrong.textContent = nextExam.paper;
+          }
           nextExamDateSpan.textContent = examDateStr;
           nextExamTimeLeftSpan.textContent = `${label}: ${timeLeftStr}`;
 
@@ -908,7 +1086,14 @@
         nextExamDiv.classList.add("cursor-pointer");
         nextExamDiv.setAttribute("role", "link");
         nextExamDiv.setAttribute("tabindex", "0");
-        nextExamDiv.setAttribute("aria-label", `Next exam is ${nextExam.paper} on ${nextExam.examStart.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}, click to open details`);
+        nextExamDiv.setAttribute(
+          "aria-label",
+          `Next exam is ${nextExam.paper} on ${nextExam.examStart.toLocaleDateString(undefined, {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+          })}, click to open details`
+        );
         nextExamDiv.onclick = () => {
           window.open(nextExam.path, "_blank", "noopener,noreferrer");
         };
@@ -949,6 +1134,17 @@
       setInterval(updateCurrentDate, 1000);
       render();
       scheduleNextUpdate();
+
+      // Update short form on window resize
+      window.addEventListener("resize", () => {
+        const nextExam = getNextExam();
+        if (!nextExam) return;
+        if (window.innerWidth <= 720) {
+          nextExamStrong.textContent = nextExam.short || nextExam.paper;
+        } else {
+          nextExamStrong.textContent = nextExam.paper;
+        }
+      });
     })();
   </script>
 </body>

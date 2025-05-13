@@ -13,18 +13,32 @@
             --dark: #1e293b;
             --light: #f8fafc;
             --accent: #f59e0b;
+            --bg: #f1f5f9;
+            --card-bg: white;
+            --text: var(--dark);
+            --timeline-bg: var(--primary);
+        }
+        
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --dark: #f8fafc;
+            --light: #1e293b;
+            --timeline-bg: #7c3aed;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
         }
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f1f5f9;
-            color: var(--dark);
+            background-color: var(--bg);
+            color: var(--text);
             line-height: 1.6;
         }
         
@@ -42,6 +56,23 @@
             border-radius: 0 0 20px 20px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         h1 {
@@ -60,6 +91,7 @@
             display: flex;
             gap: 15px;
             justify-content: center;
+            flex-wrap: wrap;
         }
         
         .btn {
@@ -87,6 +119,30 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
         }
         
+        .progress-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            height: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #f97316);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 50px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        
         .roadmap-container {
             display: flex;
             flex-direction: column;
@@ -94,12 +150,17 @@
         }
         
         .phase-card {
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        [data-theme="dark"] .phase-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .phase-card:hover {
@@ -114,6 +175,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .phase-header h2 {
@@ -150,10 +213,14 @@
         }
         
         .topic-card {
-            background-color: #f8fafc;
+            background-color: var(--light);
             border-left: 4px solid var(--accent);
             padding: 15px;
             border-radius: 0 8px 8px 0;
+        }
+        
+        [data-theme="dark"] .topic-card {
+            background-color: rgba(255, 255, 255, 0.05);
         }
         
         .topic-card h4 {
@@ -168,6 +235,10 @@
             margin-top: 20px;
         }
         
+        [data-theme="dark"] .practice-projects {
+            background-color: rgba(14, 165, 233, 0.1);
+        }
+        
         .practice-projects h3 {
             color: var(--primary);
             margin-bottom: 15px;
@@ -175,10 +246,15 @@
         
         .resources-section {
             margin-top: 50px;
-            background-color: white;
+            background-color: var(--card-bg);
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        [data-theme="dark"] .resources-section {
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .timeline {
@@ -191,7 +267,7 @@
             content: '';
             position: absolute;
             width: 4px;
-            background-color: var(--primary);
+            background-color: var(--timeline-bg);
             top: 0;
             bottom: 0;
             left: 50%;
@@ -203,6 +279,11 @@
             position: relative;
             width: 50%;
             box-sizing: border-box;
+            opacity: 0;
+        }
+        
+        .timeline-item.visible {
+            opacity: 1;
         }
         
         .timeline-item::after {
@@ -210,7 +291,7 @@
             position: absolute;
             width: 20px;
             height: 20px;
-            background-color: white;
+            background-color: var(--card-bg);
             border: 4px solid var(--primary);
             border-radius: 50%;
             top: 15px;
@@ -219,10 +300,20 @@
         
         .left {
             left: 0;
+            transform: translateX(-30px);
         }
         
         .right {
             left: 50%;
+            transform: translateX(30px);
+        }
+        
+        .left.visible {
+            transform: translateX(0);
+        }
+        
+        .right.visible {
+            transform: translateX(0);
         }
         
         .left::after {
@@ -235,9 +326,14 @@
         
         .timeline-content {
             padding: 20px;
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 10px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        [data-theme="dark"] .timeline-content {
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         footer {
@@ -249,7 +345,29 @@
             border-radius: 20px 20px 0 0;
         }
         
+        /* Mobile Styles */
         @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .phase-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .phase-duration {
+                align-self: flex-end;
+            }
+            
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+            
             .timeline::after {
                 left: 31px;
             }
@@ -276,13 +394,26 @@
 </head>
 <body>
     <header>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
         <div class="container">
             <h1>Excel to Power BI Mastery Roadmap</h1>
             <p class="subtitle">A structured path from beginner to advanced, optimized for data analytics and Power BI integration</p>
             <div class="cta-buttons">
-                <button class="btn btn-primary">Download PDF</button>
-                <button class="btn btn-outline">View Resources</button>
+                <button class="btn btn-primary" id="downloadBtn">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-outline" id="resourcesBtn">
+                    <i class="fas fa-book"></i> View Resources
+                </button>
             </div>
+            
+            <!-- Progress Tracker -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">0% Complete</div>
         </div>
     </header>
     
@@ -299,19 +430,19 @@
                     <div class="topics-grid">
                         <div class="topic-card">
                             <h4>Basic Navigation</h4>
-                            <p>Workbooks, sheets, cells, ribbons, shortcuts</p>
+                            <p>Workbooks, sheets, cells, ribbons, shortcuts (Ctrl+C, Ctrl+V, etc.)</p>
                         </div>
                         <div class="topic-card">
                             <h4>Data Entry & Formatting</h4>
-                            <p>Tables, styles, conditional formatting</p>
+                            <p>Text, numbers, dates; cell formatting; Tables (Ctrl+T)</p>
                         </div>
                         <div class="topic-card">
                             <h4>Basic Formulas</h4>
-                            <p>SUM, AVERAGE, IF, COUNTIF</p>
+                            <p>SUM, AVERAGE, MIN/MAX, COUNT, IF, SUMIF, COUNTIF</p>
                         </div>
                         <div class="topic-card">
                             <h4>Charts & Visualization</h4>
-                            <p>Bar, line, and pie charts</p>
+                            <p>Bar, line, and pie charts; basic conditional formatting</p>
                         </div>
                     </div>
                     <div class="practice-projects">
@@ -331,73 +462,100 @@
                     <span class="phase-duration">2-3 Weeks</span>
                 </div>
                 <div class="phase-content">
-                    <!-- Content similar to Phase 1 -->
+                    <h3>Topics to Master</h3>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <h4>Advanced Functions</h4>
+                            <p>VLOOKUP/XLOOKUP, INDEX-MATCH, IFS, SWITCH, text functions</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>Data Validation</h4>
+                            <p>Dropdown lists, input restrictions, custom rules</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>PivotTables</h4>
+                            <p>Summarize data, grouping, slicers, calculated fields</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>Power Query Intro</h4>
+                            <p>Import, clean, and transform data (remove duplicates, split columns)</p>
+                        </div>
+                    </div>
+                    <div class="practice-projects">
+                        <h3>Practice Projects</h3>
+                        <ul>
+                            <li>Analyze sales data with PivotTables</li>
+                            <li>Clean a messy dataset using Power Query</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
-            <!-- Additional phases would follow the same pattern -->
+            <!-- Phase 3 -->
+            <div class="phase-card">
+                <div class="phase-header">
+                    <h2>Phase 3: Advanced Excel</h2>
+                    <span class="phase-duration">3-4 Weeks</span>
+                </div>
+                <div class="phase-content">
+                    <h3>Topics to Master</h3>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <h4>Advanced Power Query</h4>
+                            <p>Merging queries, custom columns, M-code basics</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>Power Pivot & DAX</h4>
+                            <p>Data modeling, relationships, DAX (SUMX, CALCULATE)</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>Macros & VBA</h4>
+                            <p>Record macros, automate repetitive tasks</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>Dashboarding</h4>
+                            <p>Interactive reports with slicers and dynamic charts</p>
+                        </div>
+                    </div>
+                    <div class="practice-projects">
+                        <h3>Practice Projects</h3>
+                        <ul>
+                            <li>Build a sales dashboard with Power Pivot</li>
+                            <li>Automate a monthly report using macros</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             
-        </div>
-        
-        <!-- Timeline Section -->
-        <div class="timeline">
-            <div class="timeline-item left">
-                <div class="timeline-content">
-                    <h3>Week 1-2</h3>
-                    <p>Master Excel fundamentals: formulas, formatting, basic charts</p>
+            <!-- Phase 4 -->
+            <div class="phase-card">
+                <div class="phase-header">
+                    <h2>Phase 4: Excel for Power BI</h2>
+                    <span class="phase-duration">2-3 Weeks</span>
                 </div>
-            </div>
-            <div class="timeline-item right">
-                <div class="timeline-content">
-                    <h3>Week 3-5</h3>
-                    <p>Intermediate skills: PivotTables, VLOOKUP, Power Query intro</p>
-                </div>
-            </div>
-            <!-- More timeline items -->
-        </div>
-        
-        <!-- Resources Section -->
-        <div class="resources-section">
-            <h2>Free Learning Resources</h2>
-            <!-- Resource cards would go here -->
-        </div>
-    </div>
-    
-    <footer>
-        <p>© 2023 Excel to Power BI Roadmap | Designed for Data Analytics</p>
-    </footer>
-
-    <script>
-        // Toggle phase content visibility
-        document.querySelectorAll('.phase-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                content.classList.toggle('active');
-            });
-        });
-        
-        // Animate timeline items on scroll
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = 1;
-                    entry.target.style.transform = 'translateX(0)';
-                }
-            });
-        }, { threshold: 0.1 });
-        
-        timelineItems.forEach(item => {
-            item.style.opacity = 0;
-            item.style.transition = 'all 0.5s ease';
-            if (item.classList.contains('left')) {
-                item.style.transform = 'translateX(-50px)';
-            } else {
-                item.style.transform = 'translateX(50px)';
-            }
-            observer.observe(item);
-        });
-    </script>
-</body>
-</html>
+                <div class="phase-content">
+                    <h3>Topics to Master</h3>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <h4>Power Query Deep Dive</h4>
+                            <p>Parameters, error handling, advanced transformations</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>Data Modeling</h4>
+                            <p>Star schema, optimizing tables for Power BI</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>DAX Fundamentals</h4>
+                            <p>Measures vs. columns, FILTER, ALL, time intelligence</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>Power BI Integration</h4>
+                            <p>Export data models, use Excel as Power BI source</p>
+                        </div>
+                    </div>
+                    <div class="practice-projects">
+                        <h3>Practice Projects</h3>
+                        <ul>
+                            <li>Prepare an Excel dataset for Power BI visualization</li>
+                            <li>Recreate an Excel dashboard in Power BI</li>
+                        </ul

@@ -1,1268 +1,403 @@
-<html lang="en" class="light">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Retail Management
-  </title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-  <style>
-   body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f9fafb;
-      color: #1f2937;
-      margin: 0;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      font-size: 14px;
-      line-height: 1.5;
-      user-select: none;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    body.light {
-      background-color: #f9fafb;
-      color: #1f2937;
-    }
-    body.dark {
-      background-color: #1f2937;
-      color: #f9fafb;
-    }
-    #app {
-      max-width: 720px;
-      margin: 2rem auto 3rem;
-      padding: 0 1rem;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      user-select: none;
-      transition: color 0.3s ease;
-    }
-    header {
-      background-color: #ffffff;
-      border-radius: 0.75rem;
-      padding: 0.75rem 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: nowrap;
-      user-select: none;
-      border: 1px solid #d1d5db;
-      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    body.dark header {
-      background-color: #374151;
-      border-color: #4b5563;
-      box-shadow: 0 2px 8px rgb(255 255 255 / 0.1);
-    }
-    #headerIconWrapper {
-      width: 44px;
-      height: 44px;
-      border-radius: 0.5rem;
-      border: 2px solid #1f2937;
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      flex-shrink: 0;
-      transition: border-color 0.3s ease;
-      cursor: default;
-    }
-    #headerIconWrapper:hover {
-      border-color: #4b5563;
-    }
-    body.dark #headerIconWrapper {
-      border-color: #f9fafb;
-    }
-    body.dark #headerIconWrapper:hover {
-      border-color: #d1d5db;
-    }
-    #headerIcon {
-      width: 38px;
-      height: 38px;
-      border-radius: 0.4rem;
-      object-fit: cover;
-      background: transparent;
-      position: relative;
-      z-index: 1;
-      user-select: none;
-      pointer-events: none;
-    }
-    #retailTitle {
-      font-weight: 700;
-      font-size: 1.3rem;
-      line-height: 1.1;
-      color: #1f2937;
-      white-space: nowrap;
-      flex-grow: 1;
-      min-width: 0;
-      user-select: text;
-      text-shadow: none;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
-    }
-    body.dark #retailTitle {
-      color: #f9fafb;
-      text-shadow: 0 0 4px #374151;
-    }
-    #semesterContainer {
-      font-weight: 500;
-      color: #6b7280;
-      font-size: 0.85rem;
-      white-space: nowrap;
-      user-select: text;
-      margin-left: 0.3rem;
-      flex-shrink: 0;
-      font-style: normal;
-      letter-spacing: 0.02em;
-      transition: color 0.3s ease;
-    }
-    body.dark #semesterContainer {
-      color: #d1d5db;
-    }
-    #semesterContainer strong {
-      font-weight: 700;
-    }
-    #controlButtons {
-      display: flex;
-      gap: 0.75rem;
-      flex-shrink: 0;
-      align-items: center;
-    }
-    .control-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      color: #1f2937;
-      background-color: transparent;
-      border: 1.5px solid #1f2937;
-      border-radius: 0.5rem;
-      padding: 0;
-      position: relative;
-      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      font-size: 1.2rem;
-      line-height: 1;
-      user-select: none;
-    }
-    .control-btn:hover,
-    .control-btn:focus-visible {
-      background-color: #1f2937;
-      color: #f9fafb;
-      border-color: #374151;
-      outline: none;
-      box-shadow: 0 0 8px #374151cc;
-    }
-    .control-btn:active {
-      background-color: #111827;
-      border-color: #1e40af;
-      color: #dbeafe;
-      box-shadow: 0 0 12px #1e40afcc;
-    }
-    body.dark .control-btn {
-      color: #f9fafb;
-      border-color: #f9fafb;
-    }
-    body.dark .control-btn:hover,
-    body.dark .control-btn:focus-visible {
-      background-color: #f9fafb;
-      color: #1f2937;
-      border-color: #d1d5db;
-      box-shadow: 0 0 8px #d1d5dbcc;
-    }
-    body.dark .control-btn:active {
-      background-color: #e0e7ff;
-      border-color: #3730a3;
-      color: #3730a3;
-      box-shadow: 0 0 12px #3730a3cc;
-    }
-    #currentDateContainer {
-      margin-top: 1.5rem;
-      background-color: #f3f4f6;
-      color: #4b5563;
-      padding: 0.4rem 0.75rem;
-      border-radius: 9999px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      user-select: none;
-      max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      white-space: nowrap;
-      justify-content: center;
-      border: 1px solid #d1d5db;
-      box-shadow: 0 1px 6px rgb(0 0 0 / 0.1);
-      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    body.dark #currentDateContainer {
-      background-color: #374151;
-      color: #d1d5db;
-      border-color: #4b5563;
-      box-shadow: 0 1px 6px rgb(255 255 255 / 0.1);
-    }
-    #currentDateContainer i {
-      font-size: 1.3rem;
-      flex-shrink: 0;
-      color: #6b7280;
-      transition: color 0.3s ease;
-    }
-    body.dark #currentDateContainer i {
-      color: #9ca3af;
-    }
-    #currentDateContainer .divider {
-      width: 1.5px;
-      height: 1.2rem;
-      background-color: #9ca3af;
-      border-radius: 1px;
-      opacity: 0.5;
-      transition: background-color 0.3s ease;
-    }
-    body.dark #currentDateContainer .divider {
-      background-color: #d1d5db;
-      opacity: 0.3;
-    }
-    #currentDateContainer .date-part,
-    #currentDateContainer .time-part {
-      user-select: none;
-    }
-    /* Next exam notification */
-    #nextExamNotification > div {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 700;
-      font-size: 0.95rem;
-      border-radius: 0.75rem;
-      padding: 0.6rem 1rem;
-      cursor: pointer;
-      user-select: none;
-      overflow: hidden;
-      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      border: 2px solid transparent;
-      max-width: 720px;
-      margin: 2rem auto 2.5rem auto;
-      flex-wrap: nowrap;
-      background-color: #f9fafb;
-      color: #1f2937;
-      justify-content: space-between;
-      border-color: #d1d5db;
-      box-shadow: 0 0 12px rgb(0 0 0 / 0.05);
-      user-select: none;
-    }
-    body.dark #nextExamNotification > div {
-      background-color: #374151;
-      color: #f9fafb;
-      border-color: #4b5563;
-      box-shadow: 0 0 12px rgb(75 85 99 / 0.5);
-    }
-    #nextExamNotification > div:hover,
-    #nextExamNotification > div:focus-visible {
-      background-color: #4b5563;
-      color: #f9fafb;
-      border-color: #6b7280;
-      outline: none;
-      box-shadow: 0 0 20px #6b7280cc;
-    }
-    #nextExamNotification > div:active {
-      background-color: #1f2937;
-      border-color: #2563eb;
-      color: #bfdbfe;
-      box-shadow: 0 0 24px #2563ebcc;
-    }
-    #nextExamNotification > div.default {
-      background-color: transparent;
-      color: #9ca3af;
-      border-color: #d1d5db;
-      cursor: default;
-      box-shadow: none;
-    }
-    body.dark #nextExamNotification > div.default {
-      color: #6b7280;
-      border-color: #4b5563;
-    }
-    #nextExamNotification > div.hour1,
-    #nextExamNotification > div.hour2,
-    #nextExamNotification > div.hour3,
-    #nextExamNotification > div.hour4plus {
-      background-color: #f9fafb;
-      color: #1f2937;
-      border-color: #d1d5db;
-      box-shadow: 0 0 12px rgb(0 0 0 / 0.05);
-    }
-    body.dark #nextExamNotification > div.hour1,
-    body.dark #nextExamNotification > div.hour2,
-    body.dark #nextExamNotification > div.hour3,
-    body.dark #nextExamNotification > div.hour4plus {
-      background-color: #374151;
-      color: #f9fafb;
-      border-color: #4b5563;
-      box-shadow: 0 0 12px rgb(75 85 99 / 0.5);
-    }
-    #nextExamNotification > div.alert {
-      background-color: #374151;
-      color: #f9fafb;
-      border-color: #4b5563;
-      font-weight: 800;
-      animation: pulse 2s infinite ease-in-out;
-      box-shadow: 0 0 20px #4b5563dd;
-    }
-    #nextExamNotification i {
-      flex-shrink: 0;
-      font-size: 1.3rem;
-      min-width: 1.5rem;
-      text-align: center;
-      color: inherit;
-      user-select: none;
-      transition: color 0.3s ease;
-    }
-    #nextExamNotification strong {
-      flex-shrink: 1;
-      font-weight: 800;
-      font-size: 1rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 55%;
-      line-height: 1.2;
-      color: inherit;
-      user-select: text;
-      margin-right: 0.75rem;
-      transition: color 0.3s ease;
-    }
-    #nextExamNotification span.date {
-      flex-shrink: 0;
-      white-space: nowrap;
-      min-width: 6.5rem;
-      font-weight: 600;
-      font-size: 0.85rem;
-      text-align: right;
-      color: inherit;
-      user-select: none;
-      margin-right: 0.75rem;
-      font-variant-numeric: tabular-nums;
-      transition: color 0.3s ease;
-    }
-    #nextExamNotification span.timeleft {
-      flex-shrink: 0;
-      white-space: nowrap;
-      font-weight: 700;
-      min-width: 8.5rem;
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-      color: inherit;
-      user-select: none;
-      transition: color 0.3s ease;
-    }
-    @media (max-width: 720px) {
-      #nextExamNotification > div {
-        font-size: 0.8rem;
-        gap: 0.3rem;
-        padding: 0.45rem 0.75rem;
-        border-radius: 0.6rem;
-        justify-content: space-between;
-        align-items: center;
-      }
-      #nextExamNotification strong {
-        max-width: 45%;
-        font-size: 0.9rem;
-        margin-right: 0.4rem;
-      }
-      #nextExamNotification span.date,
-      #nextExamNotification span.timeleft {
-        min-width: auto;
-        text-align: right;
-        flex: 0 0 auto;
-        font-size: 0.75rem;
-        font-weight: 600;
-        margin-right: 0.4rem;
-      }
-      #nextExamNotification i {
-        font-size: 1.1rem;
-        min-width: 1.3rem;
-      }
-    }
-    /* Date filters container */
-    #dateFilters {
-      justify-content: center;
-      margin-bottom: 1.5rem;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-      display: flex;
-      width: 100%;
-    }
-    /* Date chips */
-    .date-chip {
-      padding: 0.35rem 1rem;
-      border-radius: 9999px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      border: 2px solid #6b7280cc;
-      background-color: transparent;
-      color: #6b7280cc;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      user-select: none;
-      min-width: 90px;
-      text-align: center;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      flex-shrink: 0;
-      box-shadow: 0 0 6px rgb(107 114 128 / 0.1);
-    }
-    body.dark .date-chip {
-      border-color: #d1d5dbcc;
-      color: #d1d5dbcc;
-      box-shadow: 0 0 6px rgb(209 213 219 / 0.1);
-    }
-    .date-chip:hover:not(:disabled) {
-      background-color: #374151;
-      color: #f9fafb;
-      box-shadow: 0 0 12px #4b5563cc;
-      transform: scale(1.1);
-    }
-    .date-chip:active:not(:disabled) {
-      background-color: #1f2937;
-      border-color: #2563eb;
-      color: #bfdbfe;
-      box-shadow: 0 0 16px #2563ebcc;
-      transform: scale(1.05);
-    }
-    .date-chip[aria-pressed="true"] {
-      background-color: #374151;
-      color: #f9fafb;
-      cursor: default;
-      transform: scale(1.1);
-      box-shadow: 0 0 14px #4b5563dd;
-    }
-    .date-chip:disabled {
-      cursor: not-allowed;
-      opacity: 0.3;
-      background-color: transparent !important;
-      color: #9ca3af !important;
-      border-color: #9ca3af !important;
-      box-shadow: none;
-      transform: none;
-    }
-    /* Masked style for completed dates */
-    .date-chip.masked {
-      cursor: default;
-      background-color: transparent !important;
-      color: #9ca3af !important;
-      border-color: #9ca3af !important;
-      box-shadow: none !important;
-      opacity: 0.3;
-      pointer-events: none;
-      user-select: none;
-    }
-    /* Exam cards grid */
-    #examList {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-      width: 100%;
-    }
-    /* Exam card */
-    .exam-card {
-      border-radius: 1rem;
-      overflow: hidden;
-      cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: row;
-      border: 2px solid transparent;
-      user-select: none;
-      min-height: 72px;
-      align-items: center;
-      padding: 0.6rem 1rem;
-      gap: 1rem;
-      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-      color: #1f2937;
-      background-color: #fef9f0; /* default light bg */
-    }
-    body.dark .exam-card {
-      box-shadow: 0 2px 8px rgb(75 85 99 / 0.5);
-      color: #f9fafb;
-    }
-    .exam-card:hover,
-    .exam-card:focus-visible {
-      outline: none;
-      box-shadow: 0 0 16px #4b5563cc;
-      border-color: #4b5563;
-      color: #1f2937;
-    }
-    body.dark .exam-card:hover,
-    body.dark .exam-card:focus-visible {
-      color: #f9fafb;
-    }
-    .exam-card:active {
-      box-shadow: 0 0 20px #2563ebcc;
-      border-color: #2563eb;
-      color: #1e40af;
-      background-color: #dbeafe;
-    }
-    body.dark .exam-card:active {
-      background-color: #1e40af;
-      color: #dbeafe;
-      box-shadow: 0 0 20px #93c5fdcc;
-    }
-    .exam-card.opacity-50 {
-      opacity: 0.3;
-      cursor: default;
-      pointer-events: none;
-      border-color: #d1d5db;
-      background-color: #e5e7eb;
-      color: #9ca3af;
-      transform: none !important;
-      box-shadow: none;
-    }
-    body.dark .exam-card.opacity-50 {
-      background-color: #4b5563;
-      color: #9ca3af;
-      border-color: #6b7280;
-    }
-    .exam-card .icon-wrapper {
-      flex-shrink: 0;
-      width: 40px;
-      height: 40px;
-      border-radius: 0.75rem;
-      background-color: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #4b5563cc;
-      font-size: 1.4rem;
-      transition: color 0.3s ease;
-      user-select: none;
-      box-shadow: 0 0 6px rgb(75 85 99 / 0.1);
-    }
-    body.dark .exam-card .icon-wrapper {
-      color: #9ca3afcc;
-      box-shadow: 0 0 6px rgb(156 163 175 / 0.2);
-    }
-    .exam-card:hover .icon-wrapper,
-    .exam-card:focus-visible .icon-wrapper {
-      color: #f9fafb;
-      filter: drop-shadow(0 0 2px #f9fafb);
-    }
-    .exam-card:active .icon-wrapper {
-      color: #1e40af;
-      filter: drop-shadow(0 0 4px #93c5fd);
-    }
-    body.dark .exam-card:active .icon-wrapper {
-      color: #dbeafe;
-      filter: drop-shadow(0 0 4px #93c5fd);
-    }
-    .exam-card .info {
-      flex-grow: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0.15rem;
-      overflow: hidden;
-    }
-    .exam-card h3 {
-      font-size: 1rem;
-      font-weight: 800;
-      color: inherit;
-      margin: 0;
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      user-select: text;
-      text-shadow: none;
-      transition: color 0.3s ease;
-    }
-    .exam-card .sub-info {
-      display: flex;
-      gap: 1rem;
-      font-size: 0.8rem;
-      color: #6b7280;
-      font-weight: 600;
-      user-select: none;
-      flex-wrap: nowrap;
-      transition: color 0.3s ease;
-    }
-    body.dark .exam-card .sub-info {
-      color: #9ca3af;
-    }
-    .exam-card .sub-info span {
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    .exam-card .sub-info span i {
-      font-size: 0.85rem;
-      color: #9ca3af;
-      flex-shrink: 0;
-      transition: color 0.3s ease;
-    }
-    .exam-card .chevron {
-      flex-shrink: 0;
-      color: #6b7280;
-      font-size: 1.2rem;
-      transition: color 0.3s ease;
-      user-select: none;
-    }
-    body.dark .exam-card .chevron {
-      color: #d1d5db;
-    }
-    .exam-card:hover .chevron,
-    .exam-card:focus-visible .chevron {
-      color: #f9fafb;
-    }
-    .exam-card:active .chevron {
-      color: #1e40af;
-    }
-    body.dark .exam-card:active .chevron {
-      color: #dbeafe;
-    }
-    /* Subject color theming for light mode */
-    .exam-scm {
-      background-color: #dbeafe; /* light blue */
-      color: #1e40af;
-    }
-    .exam-vm {
-      background-color: #fef3c7; /* light yellow */
-      color: #92400e;
-    }
-    .exam-er {
-      background-color: #d1fae5; /* light green */
-      color: #065f46;
-    }
-    .exam-mr {
-      background-color: #fee2e2; /* light red */
-      color: #991b1b;
-    }
-    .exam-irbr {
-      background-color: #ede9fe; /* light purple */
-      color: #5b21b6;
-    }
-    .exam-mbr {
-      background-color: #ffe4e6; /* light pink */
-      color: #9f1239;
-    }
-    .exam-rc {
-      background-color: #e0e7ff; /* light indigo */
-      color: #3730a3;
-    }
-    /* Subject color theming for dark mode */
-    body.dark .exam-scm {
-      background-color: #1e40af;
-      color: #dbeafe;
-    }
-    body.dark .exam-vm {
-      background-color: #92400e;
-      color: #fef3c7;
-    }
-    body.dark .exam-er {
-      background-color: #065f46;
-      color: #d1fae5;
-    }
-    body.dark .exam-mr {
-      background-color: #991b1b;
-      color: #fee2e2;
-    }
-    body.dark .exam-irbr {
-      background-color: #5b21b6;
-      color: #ede9fe;
-    }
-    body.dark .exam-mbr {
-      background-color: #9f1239;
-      color: #ffe4e6;
-    }
-    body.dark .exam-rc {
-      background-color: #3730a3;
-      color: #e0e7ff;
-    }
-    /* No results */
-    #noResults {
-      max-width: 600px;
-      margin: 4rem auto;
-      color: #9ca3af;
-      font-size: 1.1rem;
-      user-select: none;
-      text-align: center;
-      transition: color 0.3s ease;
-    }
-    body.dark #noResults {
-      color: #6b7280;
-    }
-    #noResults i {
-      font-size: 3.5rem;
-      margin-bottom: 1.25rem;
-      color: #6b7280;
-      transition: color 0.3s ease;
-    }
-    body.dark #noResults i {
-      color: #9ca3af;
-    }
-    /* Animations */
-    @keyframes pulse {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.6;
-      }
-    }
-  </style>
- </head>
- <body>
-  <div aria-label="Retail Management Application" id="app" role="main">
-   <header>
-    <div aria-label="Retail Management logo with dark border" id="headerIconWrapper" role="img" tabindex="0" style="display:none;">
-     <img alt="Animated gif icon showing a colorful swirling pattern with bright neon colors in motion" draggable="false" height="38" id="headerIcon" src="https://i.giphy.com/4cJAkBS9KAOz2px44s.webp" width="38"/>
-    </div>
-    <div style="flex-grow:1; min-width:0; overflow: hidden;">
-     <h1 class="select-text" id="retailTitle" title="Retail Management">
-      Retail Management
-     </h1>
-     <div id="semesterContainer" title="Current semester and greeting">
-      <strong>(जय श्री राम)</strong>
-     </div>
-    </div>
-    <div id="controlButtons" role="group" aria-label="Audio and theme controls">
-     <button aria-label="Toggle dark and light mode" class="control-btn" id="themeToggleBtn" tabindex="0" title="Toggle dark and light mode" type="button">
-      <i aria-hidden="true" class="fas fa-moon"></i>
-     </button>
-     <button aria-label="Mute audio" aria-pressed="false" class="control-btn" id="audioControlBtn" tabindex="0" title="Mute audio" type="button">
-      <i aria-hidden="true" class="fas fa-volume-up"></i>
-     </button>
-    </div>
-   </header>
-   <div aria-atomic="true" aria-live="polite" id="currentDateContainer" tabindex="0" title="Current date and time">
-    <i aria-hidden="true" class="fas fa-calendar-day"></i>
-    <span aria-label="Current date" class="date-part">
-     Sun, 27 Apr, 2025
-    </span>
-    <span aria-hidden="true" class="divider"></span>
-    <span aria-label="Current time" class="time-part">
-     10:56:58 pm
-    </span>
-   </div>
-   <section aria-atomic="true" aria-live="polite" id="nextExamNotification">
-    <div aria-label="Next exam is International Retailing and Bench Mark Retailers (IR &amp; BR) on Mon, 28 Apr, click to open details" class="cursor-pointer hour4plus" role="link" tabindex="0">
-     <i aria-hidden="true" class="fas fa-bell"></i>
-     <strong class="truncate" data-full="International Retailing and Bench Mark Retailers (IR &amp; BR)" title="International Retailing and Bench Mark Retailers (IR &amp; BR)">
-      International Retailing and Bench Mark Retailers (IR &amp; BR)
-     </strong>
-     <span aria-label="Exam date" class="date">
-      Mon, 28 Apr
-     </span>
-     <span aria-label="Time left" class="timeleft">
-      Starts in: 15:03:01
-     </span>
-    </div>
-   </section>
-   <main>
-    <div aria-label="Filter exams by date" class="flex" id="dateFilters" role="list"></div>
-    <div aria-atomic="true" aria-label="List of exams" aria-live="polite" id="examList" role="list"></div>
-    <div aria-live="assertive" class="hidden" id="noResults" role="alert" tabindex="0">
-     <i aria-hidden="true" class="fas fa-search"></i>
-     <p>
-      No exams found matching your search.
-     </p>
-    </div>
-   </main>
-  </div>
-  <script>
-   (() => {
-      const examSchedule = [
-        {
-          date: "22-04-2025",
-          day: "Tuesday",
-          paper: "Supply Chain Management (SCM)",
-          code: "ARM-S-447-B",
-          path: "https://telegra.ph/androidneeds-03-02",
-          icon: "truck-loading",
-          short: "SCM",
-          className: "exam-scm",
-        },
-        {
-          date: "23-04-2025",
-          day: "Wednesday",
-          paper: "Visual Merchandising (VM)",
-          code: "ARM-S-448-B",
-          path: "https://telegra.ph/How-to-Make-Your-Own-Hand-Sanitizer-04-25",
-          icon: "palette",
-          short: "VM",
-          className: "exam-vm",
-        },
-        {
-          date: "24-04-2025",
-          day: "Thursday",
-          paper: "E-Retailing (ER)",
-          code: "ARM-S-449-B",
-          path: "https://telegra.ph/Fraudsters-Try-To-Scam-PM-CARES-Donors-With-Fake-UPI-ID-03-31",
-          icon: "shopping-cart",
-          short: "ER",
-          className: "exam-er",
-        },
-        {
-          date: "25-04-2025",
-          day: "Friday",
-          paper: "Marketing Research (MR)",
-          code: "ARM-S-450-B",
-          path: "https://telegra.ph/Top-sites-for-career-04-11",
-          icon: "chart-line",
-          short: "MR",
-          className: "exam-mr",
-        },
-        {
-          date: "28-04-2025",
-          day: "Monday",
-          paper: "International Retailing and Bench Mark Retailers (IR & BR)",
-          code: "ARM-S-451-B",
-          path: "-",
-          icon: "globe-americas",
-          short: "IR & BR",
-          className: "exam-irbr",
-        },
-        {
-          date: "29-04-2025",
-          day: "Tuesday",
-          paper: "Multi Brand Retailing (MBR)",
-          code: "ARM-S-452-B",
-          path: "MBR.html",
-          icon: "store",
-          short: "MBR",
-          className: "exam-mbr",
-        },
-        {
-          date: "30-04-2025",
-          day: "Wednesday",
-          paper: "Retail Communications (RC)",
-          code: "ARM-S-453-B",
-          path: "RC",
-          icon: "comments",
-          short: "RC",
-          className: "exam-rc",
-        },
-      ];
-
-      let selectedDate = null;
-
-      const dateFilters = document.getElementById("dateFilters");
-      const examList = document.getElementById("examList");
-      const noResults = document.getElementById("noResults");
-      const currentDateContainer = document.getElementById("currentDateContainer");
-      const currentDatePart = currentDateContainer.querySelector(".date-part");
-      const currentTimePart = currentDateContainer.querySelector(".time-part");
-      const nextExamNotification = document.getElementById("nextExamNotification");
-      const nextExamDiv = nextExamNotification.querySelector("div");
-      const nextExamStrong = nextExamDiv.querySelector("strong");
-      const nextExamDateSpan = nextExamDiv.querySelector("span.date");
-      const nextExamTimeLeftSpan = nextExamDiv.querySelector("span.timeleft");
-
-      // Audio setup
-      const audio = new Audio(
-        "https://od.lk/s/NDJfNDgwMDM4NDFf/unpredictable-from-game-changer-telugu_6AOlZMB3.m4a"
-      );
-      audio.volume = 0.2;
-      audio.preload = "auto";
-      audio.autoplay = true;
-      audio.loop = false;
-      audio.muted = false;
-
-      window.addEventListener("load", () => {
-        audio.play().catch(() => {
-          function userInteract() {
-            audio.muted = false;
-            audio.play().catch(() => {});
-            window.removeEventListener("click", userInteract);
-            window.removeEventListener("keydown", userInteract);
-            window.removeEventListener("touchstart", userInteract);
-          }
-          window.addEventListener("click", userInteract);
-          window.addEventListener("keydown", userInteract);
-          window.addEventListener("touchstart", userInteract);
-        });
-      });
-
-      const audioControlBtn = document.getElementById("audioControlBtn");
-      const themeToggleBtn = document.getElementById("themeToggleBtn");
-      const body = document.body;
-
-      function updateAudioButton() {
-        if (audio.muted || audio.volume === 0) {
-          audioControlBtn.setAttribute("aria-label", "Unmute audio");
-          audioControlBtn.setAttribute("title", "Unmute audio");
-          audioControlBtn.setAttribute("aria-pressed", "true");
-          audioControlBtn.innerHTML = `<i class="fas fa-volume-mute" aria-hidden="true"></i>`;
-        } else {
-          audioControlBtn.setAttribute("aria-label", "Mute audio");
-          audioControlBtn.setAttribute("title", "Mute audio");
-          audioControlBtn.setAttribute("aria-pressed", "false");
-          audioControlBtn.innerHTML = `<i class="fas fa-volume-up" aria-hidden="true"></i>`;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel to Power BI Mastery Roadmap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --accent: #f59e0b;
         }
-      }
-
-      audioControlBtn.addEventListener("click", () => {
-        if (audio.muted || audio.volume === 0) {
-          audio.muted = false;
-          if (audio.paused) {
-            audio.play().catch(() => {});
-          }
-        } else {
-          audio.muted = true;
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        updateAudioButton();
-      });
-
-      audioControlBtn.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          audioControlBtn.click();
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
         }
-      });
-
-      updateAudioButton();
-
-      // Theme toggle logic
-      function updateThemeButtonIcon() {
-        if (body.classList.contains("light")) {
-          themeToggleBtn.setAttribute("aria-label", "Switch to dark mode");
-          themeToggleBtn.setAttribute("title", "Switch to dark mode");
-          themeToggleBtn.innerHTML = `<i class="fas fa-moon" aria-hidden="true"></i>`;
-        } else {
-          themeToggleBtn.setAttribute("aria-label", "Switch to light mode");
-          themeToggleBtn.setAttribute("title", "Switch to light mode");
-          themeToggleBtn.innerHTML = `<i class="fas fa-sun" aria-hidden="true"></i>`;
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-      }
-
-      themeToggleBtn.addEventListener("click", () => {
-        if (body.classList.contains("light")) {
-          body.classList.remove("light");
-          body.classList.add("dark");
-        } else {
-          body.classList.remove("dark");
-          body.classList.add("light");
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
         }
-        updateThemeButtonIcon();
-      });
-
-      themeToggleBtn.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          themeToggleBtn.click();
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
         }
-      });
-
-      // Set light mode by default
-      body.classList.add("light");
-      updateThemeButtonIcon();
-
-      function getExamEndDateTime(exam) {
-        const [dd, mm, yyyy] = exam.date.split("-");
-        return new Date(`${yyyy}-${mm}-${dd}T17:00:00`);
-      }
-
-      function filterExams() {
-        return examSchedule.filter((exam) => {
-          if (selectedDate && exam.date !== selectedDate) return false;
-          const now = new Date();
-          const examEnd = getExamEndDateTime(exam);
-          return examEnd >= now;
-        });
-      }
-
-      function renderDateFilters() {
-        const uniqueDates = [...new Set(examSchedule.map((exam) => exam.date))];
-        const now = new Date();
-
-        dateFilters.innerHTML = "";
-        uniqueDates.forEach((date) => {
-          const examsOnDate = examSchedule.filter((e) => e.date === date);
-          const allPassed = examsOnDate.every((exam) => getExamEndDateTime(exam) < now);
-
-          if (allPassed) return; // Hide completed dates
-
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "date-chip";
-          btn.setAttribute("aria-pressed", selectedDate === date);
-          btn.title = `Filter exams on ${date}`;
-          btn.textContent = date;
-          btn.addEventListener("click", () => {
-            selectedDate = selectedDate === date ? null : date;
-            render();
-          });
-          dateFilters.appendChild(btn);
-        });
-      }
-
-      function renderExams() {
-        const filteredExams = filterExams();
-        examList.innerHTML = "";
-
-        if (filteredExams.length === 0) {
-          noResults.classList.remove("hidden");
-          return;
-        } else {
-          noResults.classList.add("hidden");
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 25px;
         }
-
-        filteredExams.forEach((exam, index) => {
-          const examEnd = getExamEndDateTime(exam);
-          const now = new Date();
-          const isPast = examEnd < now;
-
-          if (isPast) return;
-
-          const card = document.createElement("article");
-          card.className = `exam-card ${exam.className}`;
-          card.style.animationDelay = `${index * 0.1}s`;
-          card.setAttribute("tabindex", "0");
-          card.setAttribute("role", "link");
-          card.setAttribute("aria-label", `Open details for exam ${exam.paper} on ${exam.date}`);
-
-          card.addEventListener("click", () => {
-            // Open in same tab
-            window.location.href = exam.path;
-          });
-          card.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              card.click();
+        
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .roadmap-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .phase-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .phase-header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .phase-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .phase-duration {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        
+        .phase-content {
+            padding: 25px;
+            display: none;
+        }
+        
+        .phase-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .topic-card {
+            background-color: #f8fafc;
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .topic-card h4 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .practice-projects {
+            background-color: #e0f2fe;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .practice-projects h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .resources-section {
+            margin-top: 50px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--primary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .left::after {
+            right: -12px;
+        }
+        
+        .right::after {
+            left: -12px;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            background-color: var(--dark);
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
             }
-          });
-
-          const iconDiv = document.createElement("div");
-          iconDiv.className = "icon-wrapper";
-          const icon = document.createElement("i");
-          icon.className = `fas fa-${exam.icon}`;
-          icon.setAttribute("aria-hidden", "true");
-          iconDiv.appendChild(icon);
-
-          const infoDiv = document.createElement("div");
-          infoDiv.className = "info";
-
-          const title = document.createElement("h3");
-          title.textContent = exam.paper;
-
-          const subInfo = document.createElement("div");
-          subInfo.className = "sub-info";
-
-          const daySpan = document.createElement("span");
-          daySpan.innerHTML = `<i class="fas fa-calendar-day" aria-hidden="true"></i> ${exam.day}`;
-
-          const codeSpan = document.createElement("span");
-          codeSpan.innerHTML = `<i class="fas fa-barcode" aria-hidden="true"></i> ${exam.code}`;
-
-          subInfo.appendChild(daySpan);
-          subInfo.appendChild(codeSpan);
-
-          infoDiv.appendChild(title);
-          infoDiv.appendChild(subInfo);
-
-          const chevron = document.createElement("i");
-          chevron.className = "fas fa-chevron-right chevron";
-          chevron.setAttribute("aria-hidden", "true");
-
-          card.appendChild(iconDiv);
-          card.appendChild(infoDiv);
-          card.appendChild(chevron);
-
-          examList.appendChild(card);
-        });
-      }
-
-      function updateCurrentDate() {
-        const now = new Date();
-        const optionsDate = { weekday: "short", year: "numeric", month: "short", day: "numeric" };
-        const optionsTime = { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true };
-        const dateStr = now.toLocaleDateString(undefined, optionsDate);
-        const timeStr = now.toLocaleTimeString(undefined, optionsTime);
-        currentDatePart.textContent = dateStr;
-        currentTimePart.textContent = timeStr;
-      }
-
-      function getNextExam() {
-        const now = new Date();
-        const upcomingExams = examSchedule
-          .map((exam) => {
-            const [dd, mm, yyyy] = exam.date.split("-");
-            const examStart = new Date(`${yyyy}-${mm}-${dd}T14:00:00`);
-            const examEnd = new Date(`${yyyy}-${mm}-${dd}T17:00:00`);
-            return { ...exam, examStart, examEnd };
-          })
-          .filter((exam) => exam.examEnd >= now)
-          .sort((a, b) => a.examStart - b.examStart);
-
-        return upcomingExams.length > 0 ? upcomingExams[0] : null;
-      }
-
-      function formatTimeLeft(ms) {
-        if (ms <= 0) return "0s";
-        const totalSeconds = Math.floor(ms / 1000);
-        const days = Math.floor(totalSeconds / 86400);
-        const hours = Math.floor((totalSeconds % 86400) / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-        let result = "";
-        if (days > 0) result += days + (days === 1 ? " day " : " days ");
-        result +=
-          (hours < 10 ? "0" : "") +
-          hours +
-          ":" +
-          (minutes < 10 ? "0" : "") +
-          minutes +
-          ":" +
-          (seconds < 10 ? "0" : "") +
-          seconds;
-        return result;
-      }
-
-      let nextExamInterval = null;
-
-      function updateNextExamNotification() {
-        const nextExam = getNextExam();
-        if (!nextExam) {
-          nextExamStrong.textContent = "No upcoming exams";
-          nextExamDateSpan.textContent = "";
-          nextExamTimeLeftSpan.textContent = "";
-          nextExamDiv.className = "default";
-          nextExamDiv.classList.remove("alert");
-          nextExamDiv.classList.remove("hour1", "hour2", "hour3", "hour4plus");
-          nextExamDiv.classList.remove("cursor-pointer");
-          nextExamDiv.removeAttribute("role");
-          nextExamDiv.removeAttribute("tabindex");
-          nextExamDiv.onclick = null;
-          nextExamDiv.onkeypress = null;
-          if (nextExamInterval) {
-            clearInterval(nextExamInterval);
-            nextExamInterval = null;
-          }
-          return;
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::after {
+                left: 21px;
+            }
+            
+            .left::after, .right::after {
+                left: 21px;
+            }
+            
+            .right {
+                left: 0;
+            }
         }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Excel to Power BI Mastery Roadmap</h1>
+            <p class="subtitle">A structured path from beginner to advanced, optimized for data analytics and Power BI integration</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary">Download PDF</button>
+                <button class="btn btn-outline">View Resources</button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="roadmap-container">
+            <!-- Phase 1 -->
+            <div class="phase-card">
+                <div class="phase-header">
+                    <h2>Phase 1: Excel Fundamentals</h2>
+                    <span class="phase-duration">1-2 Weeks</span>
+                </div>
+                <div class="phase-content active">
+                    <h3>Topics to Master</h3>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <h4>Basic Navigation</h4>
+                            <p>Workbooks, sheets, cells, ribbons, shortcuts</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>Data Entry & Formatting</h4>
+                            <p>Tables, styles, conditional formatting</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>Basic Formulas</h4>
+                            <p>SUM, AVERAGE, IF, COUNTIF</p>
+                        </div>
+                        <div class="topic-card">
+                            <h4>Charts & Visualization</h4>
+                            <p>Bar, line, and pie charts</p>
+                        </div>
+                    </div>
+                    <div class="practice-projects">
+                        <h3>Practice Projects</h3>
+                        <ul>
+                            <li>Create a personal budget tracker</li>
+                            <li>Format a sales report with basic calculations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Phase 2 -->
+            <div class="phase-card">
+                <div class="phase-header">
+                    <h2>Phase 2: Intermediate Excel</h2>
+                    <span class="phase-duration">2-3 Weeks</span>
+                </div>
+                <div class="phase-content">
+                    <!-- Content similar to Phase 1 -->
+                </div>
+            </div>
+            
+            <!-- Additional phases would follow the same pattern -->
+            
+        </div>
+        
+        <!-- Timeline Section -->
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <h3>Week 1-2</h3>
+                    <p>Master Excel fundamentals: formulas, formatting, basic charts</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <h3>Week 3-5</h3>
+                    <p>Intermediate skills: PivotTables, VLOOKUP, Power Query intro</p>
+                </div>
+            </div>
+            <!-- More timeline items -->
+        </div>
+        
+        <!-- Resources Section -->
+        <div class="resources-section">
+            <h2>Free Learning Resources</h2>
+            <!-- Resource cards would go here -->
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2023 Excel to Power BI Roadmap | Designed for Data Analytics</p>
+    </footer>
 
-        function updateTimeLeft() {
-          const now = new Date();
-          let timeLeftMs;
-          let label;
-          if (now < nextExam.examStart) {
-            timeLeftMs = nextExam.examStart - now;
-            label = "Starts in";
-          } else if (now >= nextExam.examStart && now <= nextExam.examEnd) {
-            timeLeftMs = nextExam.examEnd - now;
-            label = "Ends in";
-          } else {
-            clearInterval(nextExamInterval);
-            nextExamInterval = null;
-            render();
-            return;
-          }
-          const timeLeftStr = formatTimeLeft(timeLeftMs);
-          const options = { weekday: "short", month: "short", day: "numeric" };
-          const examDateStr = nextExam.examStart.toLocaleDateString(undefined, options);
-          if (window.innerWidth <= 720) {
-            nextExamStrong.textContent = nextExam.short || nextExam.paper;
-          } else {
-            nextExamStrong.textContent = nextExam.paper;
-          }
-          nextExamDateSpan.textContent = examDateStr;
-          nextExamTimeLeftSpan.textContent = `${label}: ${timeLeftStr}`;
-
-          const msToStart = nextExam.examStart - now;
-          const hoursToStart = msToStart / (1000 * 60 * 60);
-
-          nextExamDiv.classList.remove("hour1", "hour2", "hour3", "hour4plus", "alert", "default");
-
-          if (label === "Starts in" && msToStart <= 30 * 60 * 1000 && msToStart > 0) {
-            nextExamDiv.classList.add("alert");
-          } else if (label === "Starts in" && msToStart > 0) {
-            if (hoursToStart <= 1) {
-              nextExamDiv.classList.add("hour1");
-            } else if (hoursToStart <= 2) {
-              nextExamDiv.classList.add("hour2");
-            } else if (hoursToStart <= 3) {
-              nextExamDiv.classList.add("hour3");
+    <script>
+        // Toggle phase content visibility
+        document.querySelectorAll('.phase-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                content.classList.toggle('active');
+            });
+        });
+        
+        // Animate timeline items on scroll
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateX(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        timelineItems.forEach(item => {
+            item.style.opacity = 0;
+            item.style.transition = 'all 0.5s ease';
+            if (item.classList.contains('left')) {
+                item.style.transform = 'translateX(-50px)';
             } else {
-              nextExamDiv.classList.add("hour4plus");
+                item.style.transform = 'translateX(50px)';
             }
-          } else {
-            nextExamDiv.classList.add("default");
-          }
-        }
-
-        nextExamDiv.classList.add("cursor-pointer");
-        nextExamDiv.setAttribute("role", "link");
-        nextExamDiv.setAttribute("tabindex", "0");
-        nextExamDiv.setAttribute(
-          "aria-label",
-          `Next exam is ${nextExam.paper} on ${nextExam.examStart.toLocaleDateString(undefined, {
-            weekday: "short",
-            month: "short",
-            day: "numeric",
-          })}, click to open details`
-        );
-        nextExamDiv.onclick = () => {
-          // Open in same tab
-          window.location.href = nextExam.path;
-        };
-        nextExamDiv.onkeypress = (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            nextExamDiv.click();
-          }
-        };
-
-        updateTimeLeft();
-        if (nextExamInterval) clearInterval(nextExamInterval);
-        nextExamInterval = setInterval(updateTimeLeft, 1000);
-      }
-
-      function scheduleNextUpdate() {
-        const now = new Date();
-        const next5pm = new Date(now);
-        next5pm.setHours(17, 0, 0, 0);
-        if (now >= next5pm) {
-          next5pm.setDate(next5pm.getDate() + 1);
-        }
-        const msUntilNext5pm = next5pm - now;
-        setTimeout(() => {
-          updateNextExamNotification();
-          render();
-          scheduleNextUpdate();
-        }, msUntilNext5pm);
-      }
-
-      function render() {
-        renderDateFilters();
-        renderExams();
-        updateNextExamNotification();
-      }
-
-      updateCurrentDate();
-      setInterval(updateCurrentDate, 1000);
-      render();
-      scheduleNextUpdate();
-
-      window.addEventListener("resize", () => {
-        const nextExam = getNextExam();
-        if (!nextExam) return;
-        if (window.innerWidth <= 720) {
-          nextExamStrong.textContent = nextExam.short || nextExam.paper;
-        } else {
-          nextExamStrong.textContent = nextExam.paper;
-        }
-      });
-    })();
-  </script>
- </body>
+            observer.observe(item);
+        });
+    </script>
+</body>
 </html>
